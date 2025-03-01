@@ -16,12 +16,38 @@ minecraft <- read_csv("minecraft_game_usage.csv") %>%
   clean_names()
 ```
 ```{r}
-names(mc)
+names(minecraft)
 ```
 Block building rank : 
 
 ```{r}
-minecraft %>% 
-  quartiles_playtime <- quantcut(Playtime_minutes)
+playtime <- minecraft %>% 
+  mutate(player_type = playtime_minutes/60)
+playtime
+
+```
+```{r}
+quartile_playtime <- quantcut(playtime$player_type) 
+  table(quartile_playtime)
+```
+
+
+```{r}
+minecraft_playtime <- playtime %>% 
+  mutate( player_type= case_when(player_type<=1.28 ~ "beginner",
+                                   player_type>1.28 & player_type<=2.53 ~ "intermediate",
+                                   player_type>2.53 & player_type<= 3.77 ~ "skilled",
+                                   player_type>3.77 ~ "master"))
+```
+
+favorite tools : 
+```{r}
+minecraft_playtime %>% 
+  group_by()
+```
+```{r}
+minecraft_playtime %>% 
+  ggplot(aes(tools_used,fill = player_type))+
+  geom_bar(position = "dodge")
 ```
 
