@@ -1,0 +1,27 @@
+---
+title: "Group08"
+output: html_document
+date: "2025-02-27"
+---
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+library(paletteer)
+library(janitor)
+library(gtools)
+```
+
+```{r}
+minecraft <- read_csv("minecraft_game_usage.csv") %>% 
+  clean_names()
+```
+```{r}
+names(mc)
+```
+Block building rank : 
+
+```{r}
+minecraft %>% 
+  quartiles_playtime <- quantcut(Playtime_minutes)
+```
+
