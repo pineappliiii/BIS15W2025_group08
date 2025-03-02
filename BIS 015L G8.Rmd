@@ -51,3 +51,40 @@ minecraft_playtime %>%
   geom_bar(position = "dodge")
 ```
 
+Game mode influence death 
+```{r}
+minecraft_playtime %>% 
+  select(game_mode, deaths) %>% 
+  group_by(game_mode) %>% 
+  summarise(average_deaths=mean(deaths)) %>% 
+  ggplot(aes(x=game_mode, y=average_deaths, fill=game_mode))+
+  geom_col()
+```
+
+armor equiped related to death
+```{r}
+minecraft_playtime %>% 
+  select(armor_equipped, deaths) %>% 
+  group_by(armor_equipped) %>% 
+  ggplot(aes(deaths))+
+  geom_histogram(fill="pink", bins=10)+ 
+  facet_wrap(~armor_equipped, labeller=label_both)
+```
+```{r}
+minecraft_playtime %>% 
+  select(armor_equipped, deaths) %>% 
+  group_by(armor_equipped) %>% 
+  summarise(average_deaths=mean(deaths)) %>% 
+  ggplot(aes(x=armor_equipped, y=average_deaths, fill=armor_equipped))+
+  geom_col()
+```
+armor equipped related to play time
+```{r}
+minecraft_playtime %>% 
+  select(armor_equipped, player_type) %>%
+  group_by(armor_equipped) %>%
+  ggplot(aes(player_type,fill = armor_equipped))+
+  geom_bar(position = "dodge")
+```
+
+
