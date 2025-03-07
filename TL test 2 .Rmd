@@ -1,0 +1,25 @@
+---
+title: "Shinny App"
+output: html_document
+date: "2025-03-07"
+---
+
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+library(paletteer)
+library(janitor)
+library(gtools)
+library(DT)
+library(readr)
+```
+
+
+```{r}
+mc <- read_csv("clean_survival_PC_MCdata.csv")
+```
+
+```{r}
+
+```
+

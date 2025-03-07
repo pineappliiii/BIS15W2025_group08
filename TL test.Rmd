@@ -59,7 +59,7 @@ minecraft_playtime %>%
 ```
 
 ```{r}
-write_csv(minecraft_playtime,"clean_survival_PC_MCdata")
+write_csv(minecraft_playtime,"clean_survival_PC_MCdata.csv")
 ```
 
 
