@@ -1,0 +1,13 @@
+"level","bedrock_edition_slot","bedrock_edition_probability","java_edition_probability","low_range","high_range","item_wanted","num_item_wanted_2","item_wanted_2","num_item_given","item_given","trades_instock","price_multiplier","villager_xp"
+"Novice",1,100,67,32,32," Stick",NA,NA,"1","Emerald",16,"Low",2
+"Novice",2,50,67,1,1,"Emerald",NA,NA,"16 "," Arrow",12,"Low",1
+"Novice",2,50,67,10,10," Gravel",1," Emerald","10 "," Flint",12,"Low",1
+"Apprentice",3,100,100,26,26," Flint",NA,NA,"1","Emerald",12,"Low",10
+"Apprentice",4,100,100,2,2," Emerald",NA,NA,"1","Bow",12,"Low",5
+"Journeyman",5,100,100,14,14," String",NA,NA,"1","Emerald",16,"Low",20
+"Journeyman",6,100,100,3,3," Emerald",NA,NA,"1","Crossbow",12,"Low",10
+"Expert",7,100,100,24,24," Feather",NA,NA,"1","Emerald",16,"Low",30
+"Expert",8,100,100,7,21," Emerald",NA,NA,"1","Enchanted Bow",3,"Low",15
+"Master",9,100,67,8,8," Tripwire Hook",NA,NA,"1","Emerald",12,"Low",30
+"Master",10,50,67,8,22," Emerald",NA,NA,"1","Enchanted Crossbow",3,"Low",15
+"Master",10,50,67,2,2," Emerald",5," Arrow","5 "," Tipped Arrow",12,"Low",30
