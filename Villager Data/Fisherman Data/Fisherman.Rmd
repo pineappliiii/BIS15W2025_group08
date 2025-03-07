@@ -1,0 +1,172 @@
+---
+title: "Fisherman"
+output: html_document
+---
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+library(paletteer)
+library(janitor)
+library(gtools)
+```
+
+```{r}
+fisherman_og <- read_csv("fisherman_og.csv")
+names(fisherman_og)
+```
+
+```{r}
+fisherman_names2 <- fisherman_og[1:2, ]
+```
+
+```{r}
+fisherman_names3 <- fisherman_names2 %>%
+  pivot_longer(everything(), names_to = "variable", values_to = "value") %>%
+  # Add a row identifier
+  mutate(row_id = rep(1:nrow(fisherman_names2), each = ncol(fisherman_names2))) %>%
+  # Reshape back to wide format with rows as columns
+  pivot_wider(names_from = row_id, values_from = value, names_prefix = "Row_")
+fisherman_names3
+```
+
+```{r}
+fisherman_names3 <- fisherman_names3 %>% 
+  clean_names()
+fisherman_names3
+```
+
+```{r}
+fisherman_names4 <- fisherman_names3 %>% 
+  #filter(is.na(row_2) == TRUE)
+  mutate(new_names = case_when(is.na(row_1) == FALSE & is.na(row_2) == FALSE ~ paste(row_1, row_2, sep = " "), is.na(row_2) == TRUE ~ row_1, is.na(row_1) == TRUE ~ row_2)) %>%   mutate(new_names = ifelse(new_names == "Probability", "Bedrock Edition Probability", new_names))
+```
+
+```{r}
+fisherman_names4$new_names <- str_remove(fisherman_names4$new_names, "\n")
+fisherman_names4
+```
+
+```{r}
+fisherman2 <- fisherman_og %>%
+  rename_with(~ fisherman_names4$new_names) %>% 
+  clean_names()
+fisherman2 <- fisherman2[-c(1, 2), ]
+fisherman2
+```
+
+```{r}
+fisherman2.1 <- fisherman2 %>% 
+  mutate(bedrock_edition_slot = case_when(villager_xp == "2" ~ "1", 
+                           villager_xp == "1" ~ "2",
+                           villager_xp == "5" ~ "4",
+                           TRUE ~ bedrock_edition_slot))
+fisherman2.1
+```
+
+```{r}
+fisherman2.2 <- fisherman2.1 %>% 
+  mutate(level = case_when(bedrock_edition_slot == "1" |  bedrock_edition_slot == "2" ~ "Novice", 
+                           bedrock_edition_slot == "4" ~ "Apprentice",
+                           bedrock_edition_slot == "6" ~ "Journeyman",
+                           bedrock_edition_slot == "9" ~ "Master",
+                           TRUE ~ level))
+fisherman2.2
+```
+
+```{r}
+fisherman2.2$bedrock_edition_slot <- as.integer(fisherman2.2$bedrock_edition_slot)
+
+fisherman2.2$bedrock_edition_probability <- str_remove(fisherman2.2$bedrock_edition_probability, "%")
+
+fisherman2.2$bedrock_edition_probability <- as.integer(fisherman2.2$bedrock_edition_probability)
+
+fisherman2.2$java_edition_probability <- str_remove(fisherman2.2$java_edition_probability, "%")
+
+fisherman2.2$java_edition_probability <- as.integer(fisherman2.2$java_edition_probability)
+
+fisherman2.2$trades_instock <- as.integer(fisherman2.2$trades_instock)
+
+fisherman2.2$villager_xp <- as.integer(fisherman2.2$villager_xp)
+
+fisherman2.2
+```
+
+```{r}
+fisherman2.3 <- fisherman2.2 %>% 
+  #mutate(if_else())
+  separate(item_given, into= c("item_given", "garbage"), sep = "\\[")
+fisherman2.3 <- fisherman2.3[ ,-7]
+fisherman2.3
+```
+
+```{r}
+fisherman2.4 <- fisherman2.3 %>% 
+  #mutate(if_else())
+  separate(item_wanted, into= c("num_item_wanted", "item_wanted"), sep = "×") %>% 
+  mutate(item_wanted = if_else(is.na(item_wanted) == TRUE, num_item_wanted, item_wanted)) %>% 
+  mutate(num_item_wanted = if_else(num_item_wanted != item_wanted, num_item_wanted, "1"))
+fisherman2.4
+```
+
+```{r}
+fisherman2.5 <- fisherman2.4 %>% 
+  #mutate(if_else())
+  separate(num_item_wanted, into= c("low_range", "high_range"), sep = "–") %>% 
+  mutate(high_range = if_else(is.na(high_range) == TRUE, low_range, high_range))
+
+fisherman2.5$low_range = as.integer(fisherman2.5$low_range)
+fisherman2.5$high_range = as.integer(fisherman2.5$high_range)
+
+fisherman2.5
+```
+
+```{r}
+fisherman2.6 <- fisherman2.5 %>% 
+  #mutate(if_else())
+  separate(item_wanted, into= c("item_wanted", "garbage"), sep = "\\[")
+fisherman2.6 <- fisherman2.6[ ,-8]
+fisherman2.6
+```
+
+```{r}
+fisherman2.7 <- fisherman2.6 %>% 
+  #mutate(if_else())
+  separate(item_wanted, into= c("item_wanted", "item_wanted_2"), sep = "\\+")
+
+fisherman2.7$item_wanted <- str_remove(fisherman2.7$item_wanted, "\n")
+
+fisherman2.7
+```
+
+```{r}
+fisherman2.8 <- fisherman2.7 %>% 
+  #mutate(if_else())
+  separate(item_given, into= c("num_item_given", "item_given"), sep = "×") %>% 
+  mutate(item_given = if_else(is.na(item_given) == TRUE, num_item_given, item_given)) %>% 
+  mutate(num_item_given = if_else(num_item_given != item_given, num_item_given, "1"))
+fisherman2.8
+```
+
+```{r}
+write.csv(fisherman2.8, "fisherman_clean_1.csv", row.names = FALSE)
+fisherman <- read_csv("fisherman_clean_1.csv")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
