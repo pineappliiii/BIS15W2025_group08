@@ -1,0 +1,15 @@
+Butcher,,,,,,,,
+Level,Bedrock Edition,,Java Edition,Item wanted,Item given,"Trades in
+stock",Price multiplier,Villager XP
+,Slot,Probability,Probability,,,,,
+Novice,1,33%,50%,14 × Raw Chicken,Emerald,16,Low,2
+,,33%,50%,4 × Raw Rabbit,Emerald,16,Low,2
+,,33%,50%,7 × Raw Porkchop,Emerald,16,Low,2
+,2,100%,50%,Emerald,Rabbit Stew,12,Low,1
+Apprentice,3,100%,67%,15 × Coal,Emerald,16,Low,2
+,4,50%,67%,Emerald,8 × Cooked Chicken,16,Low,5
+,,50%,67%,Emerald,5 × Cooked Porkchop,16,Low,5
+Journeyman,5,50%,100%,10 × Raw Beef,Emerald,16,Low,20
+,,50%,100%,7 × Raw Mutton,Emerald,16,Low,20
+Expert,6,100%,100%,10 × Dried Kelp Block,Emerald,12,Low,30
+Master,7,100%,100%,10 × Sweet Berries,Emerald,12,Low,30

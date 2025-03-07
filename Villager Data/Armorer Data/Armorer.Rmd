@@ -2,7 +2,6 @@
 title: "Armorer"
 output: html_document
 ---
-
 ```{r}
 library(tidyverse)
 library(RColorBrewer)
@@ -41,6 +40,7 @@ armorer_names4 <- armorer_names3 %>%
   #filter(is.na(row_2) == TRUE)
   mutate(new_names = case_when(is.na(row_1) == FALSE & is.na(row_2) == FALSE ~ paste(row_1, row_2, sep = " "), is.na(row_2) == TRUE ~ row_1, is.na(row_1) == TRUE ~ row_2)) %>%   mutate(new_names = ifelse(new_names == "Probability", "Bedrock Edition Probability", new_names))
 ```
+
 
 ```{r}
 armorer_names4$new_names <- str_remove(armorer_names4$new_names, "\n")
@@ -115,9 +115,16 @@ armorer2.4
 ```{r}
 armorer2.5 <- armorer2.4 %>% 
   #mutate(if_else())
-  separate(low_range, into= c("low_range_2", "high_range"), sep = "\\-") #%>% 
-  #mutate(item_wanted = if_else(is.na(item_wanted) == TRUE, low_range, item_wanted)) %>% 
-  #mutate(low_range = if_else(low_range != item_wanted, low_range, "1"))
+  separate(low_range, into= c("low_range", "high_range"), sep = "–") %>% 
+  mutate(high_range = if_else(is.na(high_range) == TRUE, low_range, high_range))
+
+armorer2.5$low_range = as.integer(armorer2.5$low_range)
+armorer2.5$high_range = as.integer(armorer2.5$high_range)
+
 armorer2.5
 ```
 
+```{r}
+write.csv(armorer2.5, "armorer_clean_1.csv", row.names = FALSE)
+armorer <- read_csv("armorer_clean_1.csv")
+```
