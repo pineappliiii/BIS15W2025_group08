@@ -1,0 +1,175 @@
+---
+title: "Tracy version"
+output: html_document
+date: "2025-03-06"
+---
+
+```{r}
+install.packages("DT")
+```
+
+
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+library(paletteer)
+library(janitor)
+library(gtools)
+library(DT)
+library(readr)
+```
+
+```{r}
+minecraft <- read_csv("minecraft_game_usage.csv") %>% 
+  clean_names()
+```
+
+
+play time minutes to hours : 
+
+```{r}
+playtime <- minecraft %>% 
+  mutate(player_type = playtime_minutes/60)
+playtime
+
+```
+
+
+```{r}
+quartile_playtime <- quantcut(playtime$player_type) 
+  table(quartile_playtime)
+```
+
+
+```{r}
+minecraft_playtime <- playtime %>% 
+  mutate( player_type= case_when(player_type<=1.28 ~ "beginner",
+                                   player_type>1.28 & player_type<=2.53 ~ "intermediate",
+                                   player_type>2.53 & player_type<= 3.77 ~ "skilled",
+                                   player_type>3.77 ~ "master")) %>% 
+  filter(device_type == "PC" & game_mode == "Survival")
+minecraft_playtime
+```
+
+favorite tools : 
+```{r}
+minecraft_playtime %>% 
+  ggplot(aes(tools_used,fill = player_type))+
+  geom_bar(position = "dodge")
+```
+
+```{r}
+write_csv(minecraft_playtime,"clean_survival_PC_MCdata")
+```
+
+
+```{r}
+names(minecraft_playtime)
+```
+
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  titlePanel("Minecraft Player Analysis"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("Type", "Select Player Type:", 
+                  choices = unique(minecraft_playtime$player_type),
+                  selected = "beginner"),
+      
+      selectInput("metric", "Select Metric:", 
+                  choices = c("Playtime_minutes", "Blocks_Placed", "Blocks_Destroyed", "Items_Crafted", "Mobs_Killed", "Deaths"))),
+    
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Plots",
+                 plotOutput("boxPlot"),
+                 plotOutput("histPlot"),
+                 plotOutput("densityPlot")),
+        
+        tabPanel("Tables",
+                 DTOutput("summaryTable"),
+                 DTOutput("statsTable"),
+                 DTOutput("quantileTable")
+        )
+      )
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  filtered_data <- reactive({
+    minecraft_playtime %>% 
+      filter(Player_Category == input$category)
+  })
+  
+  output$boxPlot <- renderPlot({
+    ggplot(filtered_data(), aes(x = Player_Category, y = .data[[input$metric]], fill = Player_Category)) +
+      geom_boxplot() +
+      labs(title = paste("Boxplot of", input$metric, "for", input$category),
+           x = "Player Category", y = input$metric) +
+      theme_minimal()
+  })
+  
+  output$histPlot <- renderPlot({
+    ggplot(filtered_data(), aes(x = .data[[input$metric]], fill = Player_Category)) +
+      geom_histogram(binwidth = 10, alpha = 0.7) +
+      labs(title = paste("Histogram of", input$metric, "for", input$category),
+           x = input$metric, y = "Count") +
+      theme_minimal()
+  })
+  
+  output$densityPlot <- renderPlot({
+    ggplot(filtered_data(), aes(x = .data[[input$metric]], fill = Player_Category)) +
+      geom_density(alpha = 0.7) +
+      labs(title = paste("Density Plot of", input$metric, "for", input$category),
+           x = input$metric, y = "Density") +
+      theme_minimal()
+  })
+  
+  output$summaryTable <- renderDT({
+    datatable(summary(filtered_data()[[input$metric]]))
+  })
+  
+  output$statsTable <- renderDT({
+    datatable(data.frame(
+      Mean = mean(filtered_data()[[input$metric]], na.rm = TRUE),
+      Median = median(filtered_data()[[input$metric]], na.rm = TRUE),
+      SD = sd(filtered_data()[[input$metric]], na.rm = TRUE)
+    ))
+  })
+  
+  output$quantileTable <- renderDT({
+    datatable(as.data.frame(quantile(filtered_data()[[input$metric]], probs = seq(0, 1, 0.25), na.rm = TRUE)))
+  })
+}
+
+shinyApp(ui, server)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
