@@ -1,0 +1,23 @@
+Farmer,,,,,,,,
+Level,Bedrock Edition,,Java Edition,Item wanted,Item given,"Trades in
+stock",Price multiplier,Villager XP
+,Slot,Probability,Probability,,,,,
+Novice,1,25%,40%,20 × Wheat,Emerald,16,Low,2
+,,25%,40%,26 × Potato,Emerald,16,Low,2
+,,25%,40%,22 × Carrot,Emerald,16,Low,2
+,,25%,40%,15 × Beetroot,Emerald,16,Low,2
+,2,100%,40%,Emerald,6 × Bread,16,Low,1
+Apprentice,3,100%,67%,6 × Pumpkin,Emerald,12,Low,10
+,4,50%,67%,Emerald,4 × Pumpkin Pie,12,Low,5
+,,50%,67%,Emerald,4 × Apple,16,Low,5
+Journeyman,5,100%,100%,4 × Melon,Emerald,12,Low,20
+,6,100%,100%,3 × Emerald,18 × Cookie,12,Low,10
+Expert,7,17%,29%,Emerald,Suspicious Stew[t 1],12,Low,15
+,,17%,29%,Emerald,Suspicious Stew[t 2],12,Low,15
+,,17%,29%,Emerald,Suspicious Stew[t 3],12,Low,15
+,,17%,29%,Emerald,Suspicious Stew[t 4],12,Low,15
+,,17%,29%,Emerald,Suspicious Stew[t 5],12,Low,15
+,,17%,29%,Emerald,Suspicious Stew[t 6],12,Low,15
+,8,100%,29%,Emerald,Cake,12,Low,15
+Master,9,50%,100%,3 × Emerald,3 × Golden Carrot,12,Low,30
+,,50%,100%,4 × Emerald,3 × Glistering Melon Slice,12,Low,30

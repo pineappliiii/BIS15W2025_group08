@@ -1,0 +1,12 @@
+"level","bedrock_edition_slot","bedrock_edition_probability","java_edition_probability","num_item_wanted","item_wanted","num_item_given","item_given","trades_instock","price_multiplier","villager_xp"
+"Novice",1,100,100,"32 "," Rotten Flesh","1","Emerald",16,"Low",2
+"Novice",2,100,100,"1","Emerald","2 "," Redstone Dust",12,"Low",1
+"Apprentice",3,100,100,"3 "," Gold Ingot","1","Emerald",12,"Low",10
+"Apprentice",4,100,100,"1","Emerald","1","Lapis Lazuli",12,"Low",5
+"Journeyman",5,100,100,"2 "," Rabbit's Foot","1","Emerald",12,"Low",20
+"Journeyman",6,100,100,"4 "," Emerald","1","Glowstone",12,"Low",10
+"Expert",7,50,67,"4 "," Turtle Scute","1","Emerald",12,"Low",30
+"Expert",7,50,67,"9 "," Glass Bottle","1","Emerald",12,"Low",30
+"Expert",8,100,67,"5 "," Emerald","1","Ender Pearl",12,"Low",15
+"Master",9,100,100,"22 "," Nether Wart","1","Emerald",12,"Low",30
+"Master",10,100,100,"3 "," Emerald","1","Bottle o' Enchanting",12,"Low",30
