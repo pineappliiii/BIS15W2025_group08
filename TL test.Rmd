@@ -62,6 +62,21 @@ minecraft_playtime %>%
 write_csv(minecraft_playtime,"clean_survival_PC_MCdata.csv")
 ```
 
+```{r}
+minecraft_playtime %>% 
+  ggplot(aes(hunger_level))+
+  geom_density(alpha=0.5)+
+  facet_grid(~player_type)
+```
+
+
+
+
+
+
+
+
+
 
 ```{r}
 names(minecraft_playtime)
@@ -102,19 +117,19 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   filtered_data <- reactive({
     minecraft_playtime %>% 
-      filter(Player_Category == input$category)
+      filter(player_type == input$Type)
   })
   
   output$boxPlot <- renderPlot({
-    ggplot(filtered_data(), aes(x = Player_Category, y = .data[[input$metric]], fill = Player_Category)) +
+    ggplot(filtered_data(), aes(x = player_type, y = .data[[input$metric]], fill = player_type)) +
       geom_boxplot() +
-      labs(title = paste("Boxplot of", input$metric, "for", input$category),
+      labs(title = paste("Boxplot of", input$metric, "for", input$Type),
            x = "Player Category", y = input$metric) +
       theme_minimal()
   })
   
   output$histPlot <- renderPlot({
-    ggplot(filtered_data(), aes(x = .data[[input$metric]], fill = Player_Category)) +
+    ggplot(filtered_data(), aes(x = .data[[input$metric]], fill = player_type)) +
       geom_histogram(binwidth = 10, alpha = 0.7) +
       labs(title = paste("Histogram of", input$metric, "for", input$category),
            x = input$metric, y = "Count") +
@@ -122,9 +137,9 @@ server <- function(input, output, session) {
   })
   
   output$densityPlot <- renderPlot({
-    ggplot(filtered_data(), aes(x = .data[[input$metric]], fill = Player_Category)) +
+    ggplot(filtered_data(), aes(x = .data[[input$metric]], fill = player_type)) +
       geom_density(alpha = 0.7) +
-      labs(title = paste("Density Plot of", input$metric, "for", input$category),
+      labs(title = paste("Density Plot of", input$metric, "for", input$type),
            x = input$metric, y = "Density") +
       theme_minimal()
   })
