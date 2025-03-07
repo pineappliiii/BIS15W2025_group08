@@ -1,0 +1,125 @@
+---
+title: "Cartographer"
+output: html_document
+---
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+library(paletteer)
+library(janitor)
+library(gtools)
+```
+
+```{r}
+cartographer_og <- read_csv("cartographer_og.csv")
+names(cartographer_og)
+```
+
+```{r}
+cartographer_og_names_2 <- cartographer_og[1:2, ]
+```
+
+```{r}
+cart_og_names3 <- cartographer_og_names_2 %>%
+  pivot_longer(everything(), names_to = "variable", values_to = "value") %>%
+  # Add a row identifier
+  mutate(row_id = rep(1:nrow(armorer_names2), each = ncol(armorer_names2))) %>%
+  # Reshape back to wide format with rows as columns
+  pivot_wider(names_from = row_id, values_from = value, names_prefix = "Row_")
+cart_og_names3
+```
+
+```{r}
+cart_og_names3 <- cart_og_names3 %>% 
+  clean_names()
+cart_og_names3
+```
+
+```{r}
+cart_og_names4 <- cart_og_names3 %>% 
+  #filter(is.na(row_2) == TRUE)
+  mutate(new_names = case_when(is.na(row_1) == FALSE & is.na(row_2) == FALSE ~ paste(row_1, row_2, sep = " "), is.na(row_2) == TRUE ~ row_1, is.na(row_1) == TRUE ~ row_2)) %>%   mutate(new_names = ifelse(new_names == "Probability", "Bedrock Edition Probability", new_names))
+cart_og_names4
+```
+
+```{r}
+cart_og_names4$new_names <- str_remove(cart_og_names4$new_names, "\n")
+cart_og_names4
+```
+
+```{r}
+cartographer2 <- cartographer_og %>%
+  rename_with(~ cart_og_names4$new_names) %>% 
+  clean_names()
+cartographer2 <- cartographer2[-c(1, 2), ]
+cartographer2
+```
+
+```{r}
+cartographer2.1 <- cartographer2 %>% 
+  mutate(level = case_when(bedrock_edition_slot == "2" ~ "Novice", 
+                           bedrock_edition_slot == "4" ~ "Apprentice",
+                           bedrock_edition_slot == "6" | bedrock_edition_slot == "7" ~ "Journeyman",
+                           bedrock_edition_slot == "9" ~ "Expert",
+                           TRUE ~ level))
+cartographer2.1
+```
+
+```{r}
+cartographer2.1$bedrock_edition_slot <- as.integer(cartographer2.1$bedrock_edition_slot)
+
+cartographer2.1$bedrock_edition_probability <- str_remove(cartographer2.1$bedrock_edition_probability, "%")
+
+cartographer2.1$bedrock_edition_probability <- as.integer(cartographer2.1$bedrock_edition_probability)
+
+cartographer2.1$java_edition_probability <- str_remove(cartographer2.1$java_edition_probability, "%")
+
+cartographer2.1$java_edition_probability <- as.integer(cartographer2.1$java_edition_probability)
+
+cartographer2.1$trades_instock <- as.integer(cartographer2.1$trades_instock)
+
+cartographer2.1$villager_xp <- as.integer(cartographer2.1$villager_xp)
+
+cartographer2.1
+```
+
+```{r}
+cartographer2.3 <- cartographer2.1 %>% 
+  #mutate(if_else())
+  separate(item_given, into= c("item_given", "garbage"), sep = "\\[")
+
+cartographer2.3 <- cartographer2.3[ ,-7]
+cartographer2.3
+```
+
+```{r}
+cartographer2.4 <- cartographer2.3 %>% 
+  #mutate(if_else())
+  separate(item_wanted, into= c("num_item_wanted", "item_wanted"), sep = "×") %>% 
+  mutate(item_wanted = if_else(is.na(item_wanted) == TRUE, num_item_wanted, item_wanted)) %>% 
+  mutate(num_item_wanted = if_else(num_item_wanted != item_wanted, num_item_wanted, "1"))
+cartographer2.4
+```
+
+```{r}
+cartographer2.5 <- cartographer2.4 %>% 
+  #mutate(if_else())
+  separate(item_wanted, into= c("item_wanted_1", "item_wanted_2"), sep = "\n+") 
+  #mutate(item_wanted_2 = if_else(is.na(item_wanted_2) == TRUE, item_wanted_1, item_wanted_2)) %>% 
+  #mutate(item_wanted_1 = if_else(item_wanted_1 != item_wanted_2, item_wanted_1, "1"))
+
+cartographer2.5$item_wanted_2 <- str_remove(cartographer2.5$item_wanted_2, "\\+ ")
+cartographer2.5
+```
+
+```{r}
+write.csv(cartographer2.5, "cartographer_clean_1.csv", row.names = FALSE)
+cartographer <- read_csv("cartographer_clean_1.csv")
+```
+
+
+
+
+
+
+
