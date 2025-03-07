@@ -20,6 +20,110 @@ mc <- read_csv("clean_survival_PC_MCdata.csv")
 ```
 
 ```{r}
+# Load dataset outside Shiny
+df <- read.csv("clean_survival_PC_MCdata.csv")
+
+# Define UI
+ui <- fluidPage(
+  titlePanel("Minecraft Player Analysis"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("player_type", "Select Player Type:", choices = NULL) # Initialize with NULL
+    ),
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Tool Used", plotOutput("barplot_tool"), tableOutput("table_tool")),
+        tabPanel("Mobs Killed vs Biome", plotOutput("boxplot_mobs")),
+        tabPanel("Health Remaining Distribution", plotOutput("density_health")),
+        tabPanel("Hunger vs Health", plotOutput("scatter_hunger_health")),
+        tabPanel("Blocks Placed vs Destroyed", plotOutput("scatter_blocks")),
+        tabPanel("Armor Equipped", tableOutput("table_armor"))
+      )
+    )
+  )
+)
+
+# Define Server
+
+server <- function(input, output, session) {
+  updateSelectInput(session, "player_type", choices = unique(df$player_type)) 
+  
+  filtered_data <- reactive({
+    req(input$player_type)  # Ensure a selection is made
+    df[df$player_type == input$player_type, ]
+  })
+  
+  output$barplot_tool <- renderPlot({
+    req(nrow(filtered_data()) > 0)  # Ensure data is available
+    ggplot(filtered_data(), aes(x = tools_used)) +
+      geom_bar() +
+      theme_minimal() +
+      labs(title = "Tools Used", x = "Tool Type", y = "Count")
+  })
+  
+  output$boxplot_mobs <- renderPlot({
+    req(nrow(filtered_data()) > 0)
+    ggplot(filtered_data(), aes(x = biome, y = mobs_killed)) +
+      geom_boxplot() +
+      theme_minimal() +
+      labs(title = "Mobs Killed vs Biome", x = "Biome", y = "Mobs Killed")
+  })
+  
+  output$density_health <- renderPlot({
+    req(nrow(filtered_data()) > 0)
+    ggplot(filtered_data(), aes(x = health_remaining)) +
+      geom_histogram(aes(y = after_stat(density)), fill="thistle", alpha = 0.4, color = "black")+
+      geom_density(color = "red")+
+      theme_minimal() +
+      labs(title = "Health Remaining Distribution", x = "Health Remaining")
+  })
+  
+  output$scatter_hunger_health <- renderPlot({
+    req(nrow(filtered_data()) > 0)
+    ggplot(filtered_data(), aes(x = hunger_level, y = health_remaining)) +
+      geom_point() +
+      geom_smooth(method = lm, se=T)+
+      theme_minimal() +
+      labs(title = "Hunger Level vs Health Remaining", x = "Hunger Level", y = "Health Remaining")
+  })
+  
+  output$scatter_blocks <- renderPlot({
+    req(nrow(filtered_data()) > 0)
+    ggplot(filtered_data(), aes(x = blocks_placed, y = blocks_destroyed)) +
+      geom_point() +
+      geom_smooth(method = lm, se=T)+
+      theme_minimal() +
+      labs(title = "Blocks Placed vs Blocks Destroyed", x = "Blocks Placed", y = "Blocks Destroyed")
+  })
+  
+output$table_armor <- renderTable({
+    req(nrow(filtered_data()) > 0)
+    armor_table <- as.data.frame(table(filtered_data()$armor_equipped))
+    colnames(armor_table) <- c("Armor Type", "Number")
+    armor_table <- armor_table[order(-armor_table$Number), ]
+    if (nrow(armor_table) == 0) return(data.frame("Armor Type" = "No Data", "Number" = 0))
+    armor_table
+  })
+  
+  output$barplot_armor <- renderPlot({
+    req(nrow(filtered_data()) > 0)
+    armor_table <- as.data.frame(table(filtered_data()$armor_equipped))
+    colnames(armor_table) <- c("Armor Type", "Number")
+    armor_table <- armor_table[order(-armor_table$Number), ]
+    if (nrow(armor_table) == 0) return(NULL)
+    ggplot(armor_table, aes(x = reorder(`Armor Type`, -Number), y = Number)) +
+      geom_bar(stat = "identity", fill = "steelblue") +
+      theme_minimal() +
+      labs(title = "Armor Equipped", x = "Armor Type", y = "Count") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  })
+}
+
+
+# Run the application
+shinyApp(ui = ui, server = server)
 
 ```
+
+
 
