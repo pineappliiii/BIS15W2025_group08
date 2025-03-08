@@ -15,6 +15,8 @@ library(readr)
 library(shiny)
 library(plotly)
 ```
+
+
 ```{r}
 
 # Load dataset
@@ -64,7 +66,7 @@ server <- function(input, output, session) {
   
   output$barplot_tool <- renderPlot({
     req(nrow(filtered_data()) > 0)
-    ggplot(filtered_data(), aes(x = tools_used)) +
+    ggplot(filtered_data(), aes(x = tools_used,fill = tools_used)) +
       geom_bar() +
       theme_minimal() +
       labs(title = "Tools Used", x = "Tool Type", y = "Count")
@@ -72,12 +74,14 @@ server <- function(input, output, session) {
   
   output$table_tool <- renderTable({
     req(nrow(filtered_data()) > 0)
-    as.data.frame(table(filtered_data()$tools_used))
+    tool_table <- as.data.frame(table(filtered_data()$tools_used))
+    colnames(tool_table) <- c("Tools Used", "Number")
+    tool_table
   })
   
   output$boxplot_mobs <- renderPlot({
     req(nrow(filtered_data()) > 0)
-    ggplot(filtered_data(), aes(x = biome, y = mobs_killed)) +
+    ggplot(filtered_data(), aes(x = biome, y = mobs_killed,fill = biome)) +
       geom_boxplot() +
       theme_minimal() +
       labs(title = "Mobs Killed vs Biome", x = "Biome", y = "Mobs Killed")
@@ -136,7 +140,7 @@ server <- function(input, output, session) {
     req(nrow(filtered_data()) > 0)
     plot_ly(
       filtered_data(), x = ~coordinates_x, y = ~coordinates_y, z = ~coordinates_z,
-      type = "scatter3d", mode = "markers", marker = list(size = 3, color = 'blue')
+      type = "scatter3d", mode = "markers", marker = list(size = 3, color = 'skyblue')
     ) %>%
       layout(title = "Player 3D Position",
              scene = list(xaxis = list(title = "X Coordinate"),
