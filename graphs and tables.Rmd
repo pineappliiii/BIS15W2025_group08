@@ -1,0 +1,93 @@
+---
+title: "graphs"
+output: html_document
+date: "2025-03-08"
+---
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+library(paletteer)
+library(janitor)
+library(gtools)
+library(DT)
+library(readr)
+library(shiny)
+library(plotly)
+```
+
+
+```{r}
+minecraft <- read_csv("desktop/BIS15W2025_group08/clean_survival_PC_MCdata.csv")
+```
+Different kinds of player tool used
+```{r}
+minecraft %>% 
+  group_by(player_type) %>% 
+  ggplot(aes(x=tools_used, fill = player_type))+
+  geom_bar(position = "dodge")
+```
+
+```{r}
+minecraft %>% 
+  select(player_type, tools_used) %>% 
+  group_by(player_type, tools_used) %>% 
+  count() %>% 
+  pivot_wider(names_from = "tools_used",
+              values_from = "n")
+```
+
+Mobs Killed vs Biome
+```{r}
+minecraft %>% 
+  group_by(biome) %>% 
+  ggplot(aes(x=biome, y=mobs_killed, fill=player_type))+
+  geom_boxplot()+
+  facet_grid(player_type~.)
+```
+
+Health Remaining Distribution
+```{r}
+minecraft %>% 
+  group_by(player_type) %>% 
+  ggplot(aes(health_remaining))+
+  geom_histogram(aes(y = after_stat(density)), fill="thistle", alpha = 0.4, color = "grey", bins = 20)+
+      geom_density(color = "red")+
+      theme_minimal() +
+      labs(title = "Health Remaining Distribution", x = "Health Remaining")+
+  facet_grid(.~player_type)
+```
+Hunger vs Health
+```{r}
+minecraft %>% 
+      ggplot(aes(x = hunger_level, y = health_remaining)) +
+      geom_jitter() +
+      geom_smooth(method = lm, se=T)+
+      theme_minimal() +
+      labs(title = "Hunger Level vs Health Remaining", x = "Hunger Level", y = "Health Remaining")
+```
+
+Blocks Placed vs Destroyed
+```{r}
+minecraft %>% 
+ ggplot(aes(x = blocks_placed, y = blocks_destroyed)) +
+      geom_jitter() +
+      geom_smooth(method = lm, se=T)+
+      theme_minimal() +
+      labs(title = "Blocks Placed vs Blocks Destroyed", x = "Blocks Placed", y = "Blocks Destroyed")
+```
+different tyoes of armor used
+```{r}
+minecraft %>% 
+  select(player_type, armor_equipped) %>% 
+  group_by(player_type, armor_equipped) %>% 
+  count() %>% 
+  pivot_wider(names_from = "armor_equipped",
+              values_from = "n")
+```
+
+```{r}
+minecraft %>% 
+  group_by(player_type) %>% 
+  ggplot(aes(x=armor_equipped, fill = player_type))+
+  geom_bar(position = "dodge")
+```
