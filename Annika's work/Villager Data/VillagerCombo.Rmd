@@ -2,6 +2,9 @@
 title: "VillagerCombo"
 output: html_document
 ---
+
+##this code does not work, I was unable to merge all of the data
+
 ```{r}
 library(tidyverse)
 library(tidyr)
@@ -12,123 +15,97 @@ library(gtools)
 ```
 
 ```{r}
-Armorer <- read_csv("Armorer Data/armorer_clean_2.csv")
-Butcher <- read_csv("Butcher Data/butcher_clean_2.csv")
-Cartographer <- read_csv("Cartographer Data/cartographer_clean_2.csv")
-Cleric <- read_csv("Cleric Data/cleric_clean_2.csv")
-Farmer <- read_csv("Farmer Data/farmer_clean_2.csv")
-Fisherman <- read_csv("Fisherman Data/fisherman_clean_2.csv")
-Fletcher <- read_csv("Fletcher Data/fletcher_clean_2.csv")
-Leatherworker <- read_csv("Leatherworker Data/leatherworker_clean_2.csv")
-Librarian <- read_csv("Librarian Data/librarian_clean_2.csv")
-Mason <- read_csv("Mason Data/mason_clean_2.csv")
-Shepherd <- read_csv("Shepherd Data/shepherd_clean_2.csv")
-Toolsmith <- read_csv("Toolsmith Data/toolsmith_clean_2.csv")
-Weaponsmith <- read_csv("Weaponsmith Data/weaponsmith_clean_2.csv")
+Armorer <- read_csv("Armorer Data/armorer_sim_data.csv")
+Butcher <- read_csv("Butcher Data/butcher_sim_data.csv")
+Cartographer <- read_csv("Cartographer Data/cartographer_sim_data.csv")
+Cleric <- read_csv("Cleric Data/cleric_sim_data.csv")
+Farmer <- read_csv("Farmer Data/farmer_sim_data.csv")
+Fisherman <- read_csv("Fisherman Data/fisherman_sim_data.csv")
+Fletcher <- read_csv("Fletcher Data/fletcher_sim_data.csv")
+Leatherworker <- read_csv("Leatherworker Data/leatherworker_sim_data.csv")
+Librarian <- read_csv("Librarian Data/librarian_sim_data.csv")
+Mason <- read_csv("Mason Data/mason_sim_data.csv")
+Shepherd <- read_csv("Shepherd Data/shepherd_sim_data.csv")
+Toolsmith <- read_csv("Toolsmith Data/toolsmith_sim_data.csv")
+Weaponsmith <- read_csv("Weaponsmith Data/weaponsmith_sim_data.csv")
 
 ```
 
 ```{r}
 Armorer <- Armorer %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Butcher <- Butcher %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Cartographer <- Cartographer %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Cleric <- Cleric %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Farmer <- Farmer %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Fisherman <- Fisherman %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Fletcher <- Fletcher %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Leatherworker <- Leatherworker %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Librarian <- Librarian %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Mason <- Mason %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Shepherd <- Shepherd %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 Toolsmith <- Toolsmith %>% 
-  unite(row_id, row_id, trade)
-Weaponsmith <- Weaponsmith %>% 
-  unite(row_id, row_id, trade)
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
+Weaponsmith <- Weaponsmith %>%
+  mutate(row_id = row_number()) %>% 
+  unite(row_id_trade, row_id, trade)
 ```
 
 ```{r}
-names <- c("row_id", "level", "bedrock_edition_slot", "bedrock_edition_probability", "java_edition_probability", "em_wanted", "num_em_want_low", "num_em_want_high", "item_wanted", "num_item_want", "em_given", "num_em_given", "item_given", "num_item_given", "trades_in_stock", "price_multiplier", "villager_xp")
+datasets <- list(Armorer, Butcher, Cartographer, Cleric, Farmer, Fisherman, Fletcher, Leatherworker, Librarian, Mason, Shepherd, Toolsmith, Weaponsmith)
 ```
 
 ```{r}
-Armorer <- Armorer %>% 
-  rename_with(~ names)
-Butcher <- Butcher %>% 
-  rename_with(~ names)
-Cartographer <- Cartographer %>% 
-  rename_with(~ names)
-Cleric <- Cleric %>% 
-  rename_with(~ names)
-Farmer <- Farmer %>% 
-  rename_with(~ names)
-Fisherman <- Fisherman %>% 
-  rename_with(~ names)
-Fletcher <- Fletcher %>% 
-  rename_with(~ names)
-Leatherworker <- Leatherworker %>% 
-  rename_with(~ names)
-Librarian <- Librarian %>% 
-  rename_with(~ names)
-Mason <- Mason %>% 
-  rename_with(~ names)
-Shepherd <- Shepherd %>% 
-  rename_with(~ names)
-Toolsmith <- Toolsmith %>% 
-  rename_with(~ names)
-Weaponsmith <- Weaponsmith %>% 
-  rename_with(~ names)
+Villager_full <- Reduce(function(x, y) full_join(x, y, by = "row_id_trade"), datasets)
+
+# Automatically coalesce columns with the same name
+common_cols <- setdiff(names(Villager_full), "row_id_trade")  # Exclude the join key
+for (col in common_cols) {
+  duplicated_cols <- names(Villager_full)[grepl(paste0("^", col, "\\.x$|^", col, "\\.y$"), names(Villager_full))]
+  if (length(duplicated_cols) > 0) {
+    Villager_full <- Villager_full %>%
+      mutate(!!col := coalesce(!!!syms(duplicated_cols))) %>%
+      select(-all_of(duplicated_cols))
+  }
+}
 ```
 
-```{r}
-AB <- full_join(Armorer, Butcher, by="row_id")
-AB %>% 
-  unite(level, level.x, level.y, sep = " ", na.rm = TRUE) %>% 
-  unite(bedrock_edition_slot, bedrock_edition_slot.x, bedrock_edition_slot.y, na.rm = TRUE) %>% 
-  unite(bedrock_edition_probability, bedrock_edition_probability.x, bedrock_edition_probability.y, na.rm = TRUE) %>% 
-  unite(java_edition_probability, java_edition_probability.x, java_edition_probability.y, na.rm = TRUE) %>% 
-  unite(em_wanted, em_wanted.x, em_wanted.y, na.rm = TRUE) %>% 
-  unite(num_em_want_low, num_em_want_low.x, num_em_want_low.y, na.rm = TRUE) %>% 
-  unite(num_em_want_high, num_em_want_high.x, num_em_want_high.y, na.rm = TRUE) %>% 
-  unite(item_wanted, item_wanted.x, item_wanted.y, na.rm = TRUE) %>% 
-  unite(num_item_want, num_item_want.x, num_item_want.y, na.rm = TRUE) %>% 
-  unite(em_given, em_given.x, em_given.y, na.rm = TRUE) %>% 
-  unite(num_em_given, num_em_given.x, num_em_given.y, na.rm = TRUE) %>% 
-  unite(trades_in_stock, trades_in_stock.x, trades_in_stock.y, na.rm = TRUE) %>% 
-  unite(price_multiplier, price_multiplier.x, price_multiplier.y, na.rm = TRUE) %>% 
-  unite(villager_xp, villager_xp.x, villager_xp.y, na.rm = TRUE)
-
-CC <- full_join(Cartographer, Cleric, by="row_id")
-FF <- full_join(Farmer, Fisherman, by="row_id")
-FL <- full_join(Fletcher, Leatherworker, by="row_id")
-LM <- full_join(Librarian, Mason, by="row_id")
-ST <- full_join(Shepherd, Toolsmith, by="row_id")
-Weaponsmith
-```
 
 ```{r}
-ABCC <- full_join(AB, CC, by="row_id")
-FFFL <- full_join(FF, FL, by="row_id")
-LMST <- full_join(LM, ST, by="row_id")
-Weaponsmith
-```
-
-```{r}
-ABCCFFFL <- full_join(ABCC, FFFL, by="row_id")
-LMSTW <- full_join(LMST, Weaponsmith, by="row_id")
-```
-
-```{r}
-villager_combo <- full_join(ABCCFFFL, LMSTW, by="row_id")
+Villager_full <- Armorer %>%
+  full_join(Butcher, by = "row_id_trade") %>%
+  full_join(Cartographer, by = "row_id_trade") %>%
+  full_join(Cleric, by = "row_id_trade") %>%
+  full_join(Farmer, by = "row_id_trade") %>%
+  full_join(Fisherman, by = "row_id_trade") %>%
+  full_join(Fletcher, by = "row_id_trade") %>%
+  full_join(Leatherworker, by = "row_id_trade") %>%
+  full_join(Librarian, by = "row_id_trade") %>%
+  full_join(Mason, by = "row_id_trade") %>%
+  full_join(Shepherd, by = "row_id_trade") %>%
+  full_join(Toolsmith, by = "row_id_trade") %>%
+  full_join(Weaponsmith, by = "row_id_trade")
 ```
 

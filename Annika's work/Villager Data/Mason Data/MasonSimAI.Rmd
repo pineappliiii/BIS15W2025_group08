@@ -1,0 +1,91 @@
+---
+title: "MasonSimAI"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(purrr)
+library(tidyverse)
+library(RColorBrewer)
+library(paletteer)
+library(janitor)
+library(gtools)
+
+
+villager_data <- read_csv("mason_clean_2.csv")
+
+# Step 1: Generate all random integers and levels at once
+random_integers <- sample(1:15, 500, replace = TRUE)
+
+level_sim <- case_when(
+  random_integers == 1 ~ "Novice",
+  random_integers %in% 2:3 ~ "Apprentice",
+  random_integers %in% 4:6 ~ "Journeyman",
+  random_integers %in% 7:10 ~ "Expert",
+  random_integers %in% 11:15 ~ "Master"
+)
+
+# Step 2: Precompute max_row_id for each level
+max_row_ids <- villager_data %>%
+  group_by(level) %>%
+  summarize(max_row_id = max(row_id), .groups = "drop")
+
+# Step 3: Initialize an empty list to store results
+villagers_full_sample <- list()
+
+# Step 4: Loop through each iteration
+for (i in 1:500) {
+  # Get the level for the current iteration
+  current_level <- level_sim[i]
+  
+  # Get the max_row_id for the current level
+  max_row_id <- max_row_ids$max_row_id[max_row_ids$level == current_level]
+  
+  # Sample one row per bedrock_edition_slot for the current level
+  villager_data_sample <- villager_data %>%
+    group_by(bedrock_edition_slot) %>%
+    sample_n(1) %>%
+    mutate(across(everything(), ~ ifelse(row_id > max_row_id, NA, .)))
+  
+  # Convert the sampled data to a single row and add it to the list
+  combined_row <- as.data.frame(t(unlist(villager_data_sample)))
+  villagers_full_sample[[i]] <- combined_row
+}
+
+# Step 5: Combine all rows into a single data frame
+villagers_full_sample <- bind_rows(villagers_full_sample)
+
+# Step 6: Update the 'trade' column
+villagers_full_sample <- villagers_full_sample %>% 
+  mutate(trade = trade1)
+
+# Step 7: Update the 'level' column based on trade levels
+villagers_full_sample <- villagers_full_sample %>% 
+  mutate(level = case_when(
+    level9 == "Master" ~ "Master",
+    level8 == "Expert" ~ "Expert",
+    level5 == "Journeyman" ~ "Journeyman",
+    level4 == "Apprentice" ~ "Apprentice",
+    level1 == "Novice" ~ "Novice"
+  ))
+
+# Step 8: Select relevant columns
+villagers_full_sample <- villagers_full_sample %>% 
+  select(
+    trade, level, 
+    em_wanted1, num_em_want_low1, num_em_want_high1, item_wanted1, num_item_want1, em_given1, num_em_given1, item_given1, num_item_given1, trades_in_stock1, price_multiplier1, villager_xp1,
+    em_wanted2, num_em_want_low2, num_em_want_high2, item_wanted2, num_item_want2, em_given2, num_em_given2, item_given2, num_item_given2, trades_in_stock2, price_multiplier2, villager_xp2,
+    em_wanted3, num_em_want_low3, num_em_want_high3, item_wanted3, num_item_want3, em_given3, num_em_given3, item_given3, num_item_given3, trades_in_stock3, price_multiplier3, villager_xp3,
+    em_wanted4, num_em_want_low4, num_em_want_high4, item_wanted4, num_item_want4, em_given4, num_em_given4, item_given4, num_item_given4, trades_in_stock4, price_multiplier4, villager_xp4,
+    em_wanted5, num_em_want_low5, num_em_want_high5, item_wanted5, num_item_want5, em_given5, num_em_given5, item_given5, num_item_given5, trades_in_stock5, price_multiplier5, villager_xp5,
+    em_wanted6, num_em_want_low6, num_em_want_high6, item_wanted6, num_item_want6, em_given6, num_em_given6, item_given6, num_item_given6, trades_in_stock6, price_multiplier6, villager_xp6,
+    em_wanted7, num_em_want_low7, num_em_want_high7, item_wanted7, num_item_want7, em_given7, num_em_given7, item_given7, num_item_given7, trades_in_stock7, price_multiplier7, villager_xp7,
+         em_wanted8, num_em_want_low8, num_em_want_high8, item_wanted8, num_item_want8, em_given8, num_em_given8, item_given8, num_item_given8, trades_in_stock8, price_multiplier8, villager_xp8,
+         em_wanted9, num_em_want_low9, num_em_want_high9, item_wanted9, num_item_want9, em_given9, num_em_given9, item_given9, num_item_given9, trades_in_stock9, price_multiplier9, villager_xp9)
+```
+
+```{r}
+write.csv(villagers_full_sample, "mason_sim_data.csv", row.names = FALSE)
+mason <- read_csv("mason_sim_data.csv")
+```

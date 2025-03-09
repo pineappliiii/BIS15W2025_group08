@@ -1,0 +1,110 @@
+---
+title: "ButcherSim"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+library(paletteer)
+library(janitor)
+library(gtools)
+```
+
+```{r}
+villager_data <- read_csv("butcher_clean_2.csv")
+```
+
+```{r}
+random_integer <- sample(1:15, 1)
+```
+
+```{r}
+level_sim <- case_when(random_integer == 1 ~ "Novice",
+                       random_integer == 2 | random_integer == 3 ~ "Apprentice",
+                       random_integer == 4 | random_integer == 5 | random_integer == 6 ~ "Journeyman",
+                       random_integer == 7 | random_integer == 8 | random_integer == 9 | random_integer == 10 ~ "Expert",
+                       random_integer == 11 | random_integer == 12 | random_integer == 13 | random_integer == 14 | random_integer == 15 ~ "Master")
+```
+
+```{r}
+villager_data_row_id <- villager_data %>% 
+  filter(level == level_sim)
+  max_row_id <- max(villager_data_row_id$row_id)
+```
+
+```{r}
+villager_data_sample <- villager_data %>% 
+  group_by(bedrock_edition_slot) %>% 
+  sample_n(1) %>% 
+  mutate(across(everything(), ~ ifelse(row_id > max_row_id, NA, .)))
+```
+
+```{r}
+villagers_full_sample <- as.data.frame(t(unlist(villager_data_sample)))
+```
+
+```{r}
+
+```
+
+
+```{r}
+for (i in 1:9) {
+  
+  random_integer <- sample(1:15, 1)
+  
+  level_sim <- case_when(random_integer == 1 ~ "Novice",
+                       random_integer == 2 | random_integer == 3 ~ "Apprentice",
+                       random_integer == 4 | random_integer == 5 | random_integer == 6 ~ "Journeyman",
+                       random_integer == 7 | random_integer == 8 | random_integer == 9 | random_integer == 10 ~ "Expert",
+                       random_integer == 11 | random_integer == 12 | random_integer == 13 | random_integer == 14 | random_integer == 15 ~ "Master")
+  
+  villager_data_row_id <- villager_data %>% 
+    filter(level == level_sim)
+    max_row_id <- max(villager_data_row_id$row_id)
+  
+  villager_data_sample <- villager_data %>% 
+    group_by(bedrock_edition_slot) %>% 
+    sample_n(1) %>% 
+    mutate(across(everything(), ~ ifelse(row_id > max_row_id, NA, .)))
+  
+  combined_row <- as.data.frame(t(unlist(villager_data_sample)))
+  
+  villagers_full_sample <- full_join(villagers_full_sample, combined_row)
+  
+}
+```
+
+```{r}
+villagers_full_sample <- villagers_full_sample %>% 
+  mutate(trade = trade1)
+```
+
+```{r}
+#change this part for the various trades!
+villagers_full_sample <- villagers_full_sample %>% 
+  mutate(level = case_when(level7 == "Master" ~ "Master",
+                           level6 == "Expert" ~ "Expert",
+                           level5 == "Journeyman" ~ "Journeyman",
+                           level4 == "Apprentice" ~ "Apprentice",
+                           level1 == "Novice" ~ "Novice"))
+```
+
+```{r}
+#adjust based on how many slots the trade has
+villagers_full_sample <- villagers_full_sample %>% 
+  select(trade, level, 
+         em_wanted1, num_em_want_low1, num_em_want_high1, item_wanted1, num_item_want1, em_given1, num_em_given1, item_given1, num_item_given1, trades_in_stock1, price_multiplier1, villager_xp1,
+         em_wanted2, num_em_want_low2, num_em_want_high2, item_wanted2, num_item_want2, em_given2, num_em_given2, item_given2, num_item_given2, trades_in_stock2, price_multiplier2, villager_xp2,
+         em_wanted3, num_em_want_low3, num_em_want_high3, item_wanted3, num_item_want3, em_given3, num_em_given3, item_given3, num_item_given3, trades_in_stock3, price_multiplier3, villager_xp3,
+         em_wanted4, num_em_want_low4, num_em_want_high4, item_wanted4, num_item_want4, em_given4, num_em_given4, item_given4, num_item_given4, trades_in_stock4, price_multiplier4, villager_xp4,
+         em_wanted5, num_em_want_low5, num_em_want_high5, item_wanted5, num_item_want5, em_given5, num_em_given5, item_given5, num_item_given5, trades_in_stock5, price_multiplier5, villager_xp5,
+         em_wanted6, num_em_want_low6, num_em_want_high6, item_wanted6, num_item_want6, em_given6, num_em_given6, item_given6, num_item_given6, trades_in_stock6, price_multiplier6, villager_xp6,
+         em_wanted7, num_em_want_low7, num_em_want_high7, item_wanted7, num_item_want7, em_given7, num_em_given7, item_given7, num_item_given7, trades_in_stock7, price_multiplier7,  villager_xp7)
+```
+
+```{r}
+write.csv(villagers_full_sample, "butcher_sim_data.csv", row.names = FALSE)
+butcher <- read_csv("butcher_sim_data.csv")
+```
