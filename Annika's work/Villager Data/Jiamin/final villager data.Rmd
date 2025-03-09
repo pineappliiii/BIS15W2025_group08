@@ -1,0 +1,52 @@
+---
+title: "villager data"
+output: html_document
+date: "2025-03-09"
+---
+
+```{r, message = FALSE}
+library("tidyverse")
+library("janitor")
+library("lubridate") #this will help us manage dates
+```
+
+```{r}
+Armorer <- read_csv("Armorer Data/armorer_sim_data.csv")
+Butcher <- read_csv("Butcher Data/butcher_sim_data.csv")
+Cartographer <- read_csv("Cartographer Data/cartographer_sim_data.csv")
+Cleric <- read_csv("Cleric Data/cleric_sim_data.csv")
+Farmer <- read_csv("Farmer Data/farmer_sim_data.csv")
+Fisherman <- read_csv("Fisherman Data/fisherman_sim_data.csv")
+Fletcher <- read_csv("Fletcher Data/fletcher_sim_data.csv")
+Leatherworker <- read_csv("Leatherworker Data/leatherworker_sim_data.csv")
+Librarian <- read_csv("Librarian Data/librarian_sim_data.csv")
+Mason <- read_csv("Mason Data/mason_sim_data.csv")
+Shepherd <- read_csv("Shepherd Data/shepherd_sim_data.csv")
+Toolsmith <- read_csv("Toolsmith Data/toolsmith_sim_data.csv")
+Weaponsmith <- read_csv("Weaponsmith Data/weaponsmith_sim_data.csv")
+
+```
+combined_df <- rbind(df1, df2)
+```{r}
+combined_df <- rbind(Armorer, Farmer, Fisherman, Leatherworker, Librarian, Mason, Shepherd, Toolsmith, Weaponsmith)
+```
+
+```{r}
+combined_df2 <- rbind(Cartographer, Cleric, Fletcher)
+```
+
+```{r}
+names(Butcher)
+```
+```{r}
+names(Armorer)
+```
+
+```{r}
+final_data <- bind_rows(combined_df, combined_df2, Butcher)
+```
+
+```{r}
+write_csv(final_data,"combined_villager_data.csv")
+```
+
