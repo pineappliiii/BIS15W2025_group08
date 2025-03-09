@@ -1,5 +1,5 @@
 ---
-title: "Fisherman"
+title: "Librarian"
 output: html_document
 ---
 ```{r}
@@ -11,7 +11,7 @@ library(gtools)
 ```
 
 ```{r}
-fisherman_og <- read_csv("fisherman_og.csv")
+fisherman_og <- read_csv("librarian_og.csv")
 names(fisherman_og)
 ```
 
@@ -56,19 +56,20 @@ fisherman2
 
 ```{r}
 fisherman2.1 <- fisherman2 %>% 
-  mutate(bedrock_edition_slot = case_when(villager_xp == "2" ~ "1", 
-                           villager_xp == "1" ~ "2",
+  mutate(bedrock_edition_slot = case_when(villager_xp == "1" ~ "2", 
                            villager_xp == "5" ~ "4",
+                           villager_xp == "10" & item_given == "Enchanted Book[t 1]" ~ "6",
+                           bedrock_edition_probability == "33%" ~ "8",
                            TRUE ~ bedrock_edition_slot))
 fisherman2.1
 ```
 
 ```{r}
 fisherman2.2 <- fisherman2.1 %>% 
-  mutate(level = case_when(bedrock_edition_slot == "1" |  bedrock_edition_slot == "2" ~ "Novice", 
+  mutate(level = case_when(bedrock_edition_slot == "2" ~ "Novice", 
                            bedrock_edition_slot == "4" ~ "Apprentice",
                            bedrock_edition_slot == "6" ~ "Journeyman",
-                           bedrock_edition_slot == "9" ~ "Master",
+                           bedrock_edition_slot == "8" ~ "Expert",
                            TRUE ~ level))
 fisherman2.2
 ```
@@ -180,16 +181,21 @@ cleaner_data1.1
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>% 
+  mutate(item_wanted = if_else(item_wanted != "Emerald", item_wanted, NA)) %>% 
+  mutate(item_wanted = if_else(is.na(item_wanted_2) == FALSE, item_wanted_2, item_wanted))
+```
+
+```{r}
+cleaner_data1.1 <- cleaner_data1.1 %>% 
   #mutate(num_item_wanted = as.integer(num_item_wanted)) %>% 
   mutate(num_item_want = if_else(item_wanted != "Emerald", low_range, NA))
 ```
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>% 
-  mutate(item_wanted = if_else(item_wanted != "Emerald", item_wanted, NA))  
+  mutate(num_item_want = ifelse(row_id == 10, 2, num_item_want))   
+cleaner_data1.1
 ```
-
-
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>% 
@@ -208,12 +214,12 @@ cleaner_data1.1 <- cleaner_data1.1 %>%
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>% 
-  mutate(num_item_given = ifelse(is.na(item_wanted) != FALSE, num_item_given, NA))  
+  mutate(num_item_given = ifelse(is.na(item_given) == FALSE, num_item_given, NA))  
 ```
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>%
-  mutate(trade = "Fisherman")
+  mutate(trade = "Librarian")
 ```
 
 ```{r}
@@ -222,6 +228,6 @@ cleaner_data1.1 <- cleaner_data1.1 %>%
 ```
 
 ```{r}
-write.csv(cleaner_data1.1, "fisherman_clean_2.csv", row.names = FALSE)
-fisherman <- read_csv("fisherman_clean_2.csv")
+write.csv(cleaner_data1.1, "librarian_clean_2.csv", row.names = FALSE)
+librarian <- read_csv("librarian_clean_2.csv")
 ```

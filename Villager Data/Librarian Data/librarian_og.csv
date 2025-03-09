@@ -1,0 +1,23 @@
+Librarian,,,,,,,,
+Level,Bedrock Edition,,Java Edition,Item wanted,Item given,"Trades in
+stock",Price multiplier,Villager XP
+,Slot,Probability,Probability,,,,,
+Novice,1,100%,67%,24 × Paper,Emerald,16,Low,2
+,2,50%,67%,9 × Emerald,Bookshelf,12,Low,1
+,,50%,67%,"5–64 × Emerald
++ Book",Enchanted Book[t 1],12,High,1
+Apprentice,3,100%,67%,4 × Book,Emerald,12,Low,10
+,4,50%,67%,Emerald,Lantern,12,Low,5
+,,50%,67%,"5–64 × Emerald
++ Book",Enchanted Book[t 1],12,High,5
+Journeyman,5,100%,67%,5 × Ink Sac,Emerald,12,Low,20
+,6,50%,67%,Emerald,4 × Glass,12,Low,10
+,,50%,67%,"5–64 × Emerald
++ Book",Enchanted Book[t 1],12,High,10
+Expert,7,100%,50%,"Book and Quill
++ Book and Quill[t 2]",Emerald,12,Low,30
+,8,33%,50%,4 × Emerald,Compass,12,Low,15
+,,33%,50%,5 × Emerald,Clock,12,Low,15
+,,33%,50%,"5–64 × Emerald
++ Book",Enchanted Book[t 1],12,High,15
+Master,9,100%,100%,20 × Emerald,Name Tag,12,Low,30

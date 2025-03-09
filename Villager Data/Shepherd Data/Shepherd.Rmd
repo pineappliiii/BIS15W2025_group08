@@ -1,5 +1,5 @@
 ---
-title: "Fisherman"
+title: "Shepherd"
 output: html_document
 ---
 ```{r}
@@ -11,7 +11,7 @@ library(gtools)
 ```
 
 ```{r}
-fisherman_og <- read_csv("fisherman_og.csv")
+fisherman_og <- read_csv("shepherd_og.csv")
 names(fisherman_og)
 ```
 
@@ -56,9 +56,11 @@ fisherman2
 
 ```{r}
 fisherman2.1 <- fisherman2 %>% 
-  mutate(bedrock_edition_slot = case_when(villager_xp == "2" ~ "1", 
-                           villager_xp == "1" ~ "2",
-                           villager_xp == "5" ~ "4",
+  mutate(bedrock_edition_slot = case_when(bedrock_edition_probability == "25%" ~ "1", 
+                           java_edition_probability == "5%" ~ "3",
+                           java_edition_probability == "68%" ~ "4",
+                           java_edition_probability == "10%" ~ "5",
+                           java_edition_probability == "9%" ~ "7",
                            TRUE ~ bedrock_edition_slot))
 fisherman2.1
 ```
@@ -66,9 +68,9 @@ fisherman2.1
 ```{r}
 fisherman2.2 <- fisherman2.1 %>% 
   mutate(level = case_when(bedrock_edition_slot == "1" |  bedrock_edition_slot == "2" ~ "Novice", 
-                           bedrock_edition_slot == "4" ~ "Apprentice",
-                           bedrock_edition_slot == "6" ~ "Journeyman",
-                           bedrock_edition_slot == "9" ~ "Master",
+                           bedrock_edition_slot == "3" |  bedrock_edition_slot == "4" ~ "Apprentice",
+                           bedrock_edition_slot == "5" |  bedrock_edition_slot == "6" ~ "Journeyman",
+                           bedrock_edition_slot == "7" |  bedrock_edition_slot == "8" ~ "Expert",
                            TRUE ~ level))
 fisherman2.2
 ```
@@ -109,37 +111,7 @@ fisherman2.4
 ```
 
 ```{r}
-fisherman2.5 <- fisherman2.4 %>% 
-  #mutate(if_else())
-  separate(num_item_wanted, into= c("low_range", "high_range"), sep = "–") %>% 
-  mutate(high_range = if_else(is.na(high_range) == TRUE, low_range, high_range))
-
-fisherman2.5$low_range = as.integer(fisherman2.5$low_range)
-fisherman2.5$high_range = as.integer(fisherman2.5$high_range)
-
-fisherman2.5
-```
-
-```{r}
-fisherman2.6 <- fisherman2.5 %>% 
-  #mutate(if_else())
-  separate(item_wanted, into= c("item_wanted", "garbage"), sep = "\\[")
-fisherman2.6 <- fisherman2.6[ ,-8]
-fisherman2.6
-```
-
-```{r}
-fisherman2.7 <- fisherman2.6 %>% 
-  #mutate(if_else())
-  separate(item_wanted, into= c("item_wanted", "item_wanted_2"), sep = "\\+")
-
-fisherman2.7$item_wanted <- str_remove(fisherman2.7$item_wanted, "\n")
-
-fisherman2.7
-```
-
-```{r}
-fisherman2.8 <- fisherman2.7 %>% 
+fisherman2.8 <- fisherman2.4 %>% 
   #mutate(if_else())
   separate(item_given, into= c("num_item_given", "item_given"), sep = "×") %>% 
   mutate(item_given = if_else(is.na(item_given) == TRUE, num_item_given, item_given)) %>% 
@@ -157,7 +129,7 @@ cleaner_data <- fisherman2.8 %>%
 ```{r}
 cleaner_data1 <- cleaner_data %>% 
   mutate(item_wanted = str_trim(item_wanted, side = "left")) %>% 
-  mutate(item_wanted_2 = str_trim(item_wanted_2, side = "left")) %>% 
+  #mutate(item_wanted_2 = str_trim(item_wanted_2, side = "left")) %>% 
   mutate(item_given = str_trim(item_given, side = "left")) 
 cleaner_data1$item_wanted <- str_remove(cleaner_data1$item_wanted, "\r")
 cleaner_data1
@@ -166,30 +138,28 @@ cleaner_data1
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1 %>% 
-  mutate(em_wanted = case_when(item_wanted_2 == "Emerald" ~ TRUE,
-                               item_wanted == "Emerald" ~ TRUE,
+  mutate(em_wanted = case_when(item_wanted == "Emerald" ~ TRUE,
                                 TRUE ~ FALSE)) 
 ```
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>% 
-  mutate(num_em_want_low = ifelse(em_wanted == TRUE, low_range, NA)) %>% 
-  mutate(num_em_want_high = ifelse(em_wanted == TRUE, high_range, NA))  
+  mutate(num_em_want_low = ifelse(em_wanted == TRUE, num_item_wanted, NA)) %>% 
+  mutate(num_em_want_high = ifelse(em_wanted == TRUE, num_item_wanted, NA))  
 cleaner_data1.1
 ```
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>% 
-  #mutate(num_item_wanted = as.integer(num_item_wanted)) %>% 
-  mutate(num_item_want = if_else(item_wanted != "Emerald", low_range, NA))
+  mutate(item_wanted = if_else(item_wanted != "Emerald", item_wanted, NA)) #%>% 
+  #mutate(item_wanted = if_else(is.na(item_wanted_2) == FALSE, item_wanted_2, item_wanted))
 ```
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>% 
-  mutate(item_wanted = if_else(item_wanted != "Emerald", item_wanted, NA))  
+  #mutate(num_item_wanted = as.integer(num_item_wanted)) %>% 
+  mutate(num_item_want = if_else(item_wanted != "Emerald", num_item_wanted, NA))
 ```
-
-
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>% 
@@ -208,12 +178,16 @@ cleaner_data1.1 <- cleaner_data1.1 %>%
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>% 
-  mutate(num_item_given = ifelse(is.na(item_wanted) != FALSE, num_item_given, NA))  
+  mutate(num_item_given = ifelse(is.na(item_given) == FALSE, num_item_given, NA))  
+```
+
+```{r}
+cleaner_data1.1$item_given <- str_remove(cleaner_data1.1$item_given, "Any color ")
 ```
 
 ```{r}
 cleaner_data1.1 <- cleaner_data1.1 %>%
-  mutate(trade = "Fisherman")
+  mutate(trade = "Shepherd")
 ```
 
 ```{r}
@@ -222,6 +196,7 @@ cleaner_data1.1 <- cleaner_data1.1 %>%
 ```
 
 ```{r}
-write.csv(cleaner_data1.1, "fisherman_clean_2.csv", row.names = FALSE)
-fisherman <- read_csv("fisherman_clean_2.csv")
+write.csv(cleaner_data1.1, "shepherd_clean_2.csv", row.names = FALSE)
+shepherd <- read_csv("shepherd_clean_2.csv")
 ```
+

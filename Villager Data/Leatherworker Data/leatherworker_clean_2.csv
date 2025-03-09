@@ -1,0 +1,13 @@
+"row_id","trade","level","bedrock_edition_slot","bedrock_edition_probability","java_edition_probability","em_wanted","num_em_want_low","num_em_want_high","item_wanted","num_item_want","em_given","num_em_given","item_given","num_item_given","trades_in_stock","price_multiplier","villager_xp"
+1,"Leatherworker","Novice",1,100,67,FALSE,NA,NA,"Leather",6,TRUE,1,NA,NA,16,"Low",2
+2,"Leatherworker","Novice",2,50,67,TRUE,3,3,NA,NA,FALSE,NA,"Leather Pants",1,12,"High",1
+3,"Leatherworker","Novice",2,50,67,TRUE,7,7,NA,NA,FALSE,NA,"Leather Tunic",1,12,"High",1
+4,"Leatherworker","Apprentice",3,100,67,FALSE,NA,NA,"Flint",26,TRUE,1,NA,NA,12,"Low",10
+5,"Leatherworker","Apprentice",4,50,67,TRUE,5,5,NA,NA,FALSE,NA,"Leather Cap",1,12,"High",5
+6,"Leatherworker","Apprentice",4,50,67,TRUE,4,4,NA,NA,FALSE,NA,"Leather Boots",1,12,"High",5
+7,"Leatherworker","Journeyman",5,100,100,FALSE,NA,NA,"Rabbit Hide",9,TRUE,1,NA,NA,12,"Low",20
+8,"Leatherworker","Journeyman",6,100,100,TRUE,7,7,NA,NA,FALSE,NA,"Leather Tunic",1,12,"High",10
+9,"Leatherworker","Expert",7,100,100,FALSE,NA,NA,"Turtle Scute",4,TRUE,1,NA,NA,12,"Low",30
+10,"Leatherworker","Expert",8,100,100,TRUE,6,6,NA,NA,FALSE,NA,"Leather Horse Armor",1,12,"High",15
+11,"Leatherworker","Master",9,50,100,TRUE,5,5,NA,NA,FALSE,NA,"Leather Cap",1,12,"High",30
+12,"Leatherworker","Master",9,50,100,TRUE,6,6,NA,NA,FALSE,NA,"Saddle",1,12,"High",30

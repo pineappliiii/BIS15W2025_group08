@@ -1,0 +1,17 @@
+"level","bedrock_edition_slot","bedrock_edition_probability","java_edition_probability","num_item_wanted","item_wanted","num_item_given","item_given","trades_in_stock","price_multiplier","villager_xp"
+"Novice",1,100,100,10," Clay Ball",1,"Emerald",16,"Low",2
+"Novice",2,100,100,1,"Emerald",10," Brick",16,"Low",1
+"Apprentice",3,100,100,20," Stone",1,"Emerald",16,"Low",10
+"Apprentice",4,100,100,1,"Emerald",4," Chiseled Stone Bricks",16,"Low",5
+"Journeyman",5,33,29,16," Granite",1,"Emerald",16,"Low",20
+"Journeyman",5,33,29,16," Andesite",1,"Emerald",16,"Low",20
+"Journeyman",5,33,29,16," Diorite",1,"Emerald",16,"Low",20
+"Journeyman",6,25,29,1,"Emerald",4," Dripstone Block",16,"Low",10
+"Journeyman",6,25,29,1,"Emerald",4," Polished Andesite",16,"Low",10
+"Journeyman",6,25,29,1,"Emerald",4," Polished Diorite",16,"Low",10
+"Journeyman",6,25,29,1,"Emerald",4," Polished Granite",16,"Low",10
+"Expert",7,100,6,12," Nether Quartz",1,"Emerald",12,"Low",30
+"Expert",8,50,74,1,"Emerald",1,"Any color Stained Terracotta",12,"Low",15
+"Expert",8,50,74,1,"Emerald",1,"Any color Glazed Terracotta",12,"Low",15
+"Master",9,50,100,1,"Emerald",1,"Quartz Pillar",12,"Low",30
+"Master",9,50,100,1,"Emerald",1,"Block of Quartz",12,"Low",30

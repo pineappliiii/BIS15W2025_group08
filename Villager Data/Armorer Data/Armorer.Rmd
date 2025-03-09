@@ -77,7 +77,7 @@ armorer2.1$java_edition_probability <- str_remove(armorer2.1$java_edition_probab
 
 armorer2.1$java_edition_probability <- as.integer(armorer2.1$java_edition_probability)
 
-armorer2.1$trades_instock <- as.integer(armorer2.1$trades_instock)
+armorer2.1$trades_in_stock <- as.integer(armorer2.1$trades_in_stock)
 
 armorer2.1$villager_xp <- as.integer(armorer2.1$villager_xp)
 
@@ -124,7 +124,36 @@ armorer2.5$high_range = as.integer(armorer2.5$high_range)
 armorer2.5
 ```
 
+##I am making more edits here to make this dataset cohesive
+
 ```{r}
-write.csv(armorer2.5, "armorer_clean_1.csv", row.names = FALSE)
-armorer <- read_csv("armorer_clean_1.csv")
+cleaner_data <- armorer2.5 %>%
+  mutate(row_id = row_number())
+```
+
+```{r}
+cleaner_data1 <- cleaner_data %>% 
+mutate(item_wanted = str_trim(item_wanted, side = "left"))
+cleaner_data1
+```
+
+```{r}
+cleaner_data1.1 <- cleaner_data1 %>% 
+  mutate(em_wanted = if_else(item_wanted == "Emerald", TRUE, FALSE)) %>% 
+  mutate(num_em_want_low = ifelse(em_wanted == TRUE, low_range, NA)) %>% 
+  mutate(num_em_want_high = ifelse(em_wanted == TRUE, high_range, NA)) %>% 
+  mutate(item_wanted = ifelse(item_wanted == "Emerald", NA, item_wanted)) %>% 
+  mutate(num_item_want = ifelse(is.na(item_wanted) == FALSE, low_range, NA)) %>% 
+  #mutate(num_item_want_high = ifelse(is.na(item_wanted) == FALSE, high_range, NA)) %>% 
+  mutate(em_given = if_else(item_given == "Emerald", TRUE, FALSE)) %>% 
+  mutate(num_em_given = ifelse(em_given == TRUE, 1, NA)) %>% 
+  mutate(item_given = ifelse(item_given == "Emerald", NA, item_given)) %>% 
+  mutate(num_item_given = ifelse(is.na(item_wanted) != FALSE, 1, NA)) %>% 
+  mutate(trade = "Armorer") %>% 
+  select(row_id, trade, level, bedrock_edition_slot, bedrock_edition_probability, java_edition_probability, em_wanted, num_em_want_low, num_em_want_high, item_wanted, num_item_want, em_given, num_em_given, item_given, num_item_given, trades_in_stock, price_multiplier, villager_xp)
+```
+
+```{r}
+write.csv(cleaner_data1.1, "armorer_clean_2.csv", row.names = FALSE)
+armorer <- read_csv("armorer_clean_2.csv")
 ```

@@ -1,4 +1,4 @@
-"level","bedrock_edition_slot","bedrock_edition_probability","java_edition_probability","num_item_wanted","item_wanted","num_item_given","item_given","trades_instock","price_multiplier","villager_xp"
+"level","bedrock_edition_slot","bedrock_edition_probability","java_edition_probability","num_item_wanted","item_wanted","num_item_given","item_given","trades_in_stock","price_multiplier","villager_xp"
 "Novice",1,33,50,14," Raw Chicken",1,"Emerald",16,"Low",2
 "Novice",1,33,50,4," Raw Rabbit",1,"Emerald",16,"Low",2
 "Novice",1,33,50,7," Raw Porkchop",1,"Emerald",16,"Low",2

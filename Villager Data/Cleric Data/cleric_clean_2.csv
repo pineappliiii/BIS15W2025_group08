@@ -1,0 +1,12 @@
+"row_id","trade","level","bedrock_edition_slot","bedrock_edition_probability","java_edition_probability","em_wanted","num_em_want_low","num_em_want_high","item_wanted","num_item_want","em_given","num_em_given","item_given","num_item_given","trades_in_stock","price_multiplier","villager_xp"
+1,"Cleric","Novice",1,100,100,FALSE,NA,NA,"Rotten Flesh","32 ",TRUE,"1",NA,NA,16,"Low",2
+2,"Cleric","Novice",2,100,100,TRUE,"1","1",NA,NA,FALSE,NA,"Redstone Dust","2 ",12,"Low",1
+3,"Cleric","Apprentice",3,100,100,FALSE,NA,NA,"Gold Ingot","3 ",TRUE,"1",NA,NA,12,"Low",10
+4,"Cleric","Apprentice",4,100,100,TRUE,"1","1",NA,NA,FALSE,NA,"Lapis Lazuli","1",12,"Low",5
+5,"Cleric","Journeyman",5,100,100,FALSE,NA,NA,"Rabbit's Foot","2 ",TRUE,"1",NA,NA,12,"Low",20
+6,"Cleric","Journeyman",6,100,100,TRUE,"4 ","4 ",NA,NA,FALSE,NA,"Glowstone","1",12,"Low",10
+7,"Cleric","Expert",7,50,67,FALSE,NA,NA,"Turtle Scute","4 ",TRUE,"1",NA,NA,12,"Low",30
+8,"Cleric","Expert",7,50,67,FALSE,NA,NA,"Glass Bottle","9 ",TRUE,"1",NA,NA,12,"Low",30
+9,"Cleric","Expert",8,100,67,TRUE,"5 ","5 ",NA,NA,FALSE,NA,"Ender Pearl","1",12,"Low",15
+10,"Cleric","Master",9,100,100,FALSE,NA,NA,"Nether Wart","22 ",TRUE,"1",NA,NA,12,"Low",30
+11,"Cleric","Master",10,100,100,TRUE,"3 ","3 ",NA,NA,FALSE,NA,"Bottle o' Enchanting","1",12,"Low",30

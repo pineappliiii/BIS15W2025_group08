@@ -23,7 +23,7 @@ cartographer_og_names_2 <- cartographer_og[1:2, ]
 cart_og_names3 <- cartographer_og_names_2 %>%
   pivot_longer(everything(), names_to = "variable", values_to = "value") %>%
   # Add a row identifier
-  mutate(row_id = rep(1:nrow(armorer_names2), each = ncol(armorer_names2))) %>%
+  mutate(row_id = rep(1:nrow(cartographer_og_names_2), each = ncol(cartographer_og_names_2))) %>%
   # Reshape back to wide format with rows as columns
   pivot_wider(names_from = row_id, values_from = value, names_prefix = "Row_")
 cart_og_names3
@@ -76,7 +76,7 @@ cartographer2.1$java_edition_probability <- str_remove(cartographer2.1$java_edit
 
 cartographer2.1$java_edition_probability <- as.integer(cartographer2.1$java_edition_probability)
 
-cartographer2.1$trades_instock <- as.integer(cartographer2.1$trades_instock)
+cartographer2.1$trades_in_stock <- as.integer(cartographer2.1$trades_in_stock)
 
 cartographer2.1$villager_xp <- as.integer(cartographer2.1$villager_xp)
 
@@ -112,14 +112,80 @@ cartographer2.5$item_wanted_2 <- str_remove(cartographer2.5$item_wanted_2, "\\+ 
 cartographer2.5
 ```
 
+##I am making more edits here to make this dataset cohesive
+
 ```{r}
-write.csv(cartographer2.5, "cartographer_clean_1.csv", row.names = FALSE)
-cartographer <- read_csv("cartographer_clean_1.csv")
+cleaner_data <- cartographer2.5 %>%
+  mutate(row_id = row_number())
+```
+
+```{r}
+cleaner_data1 <- cleaner_data %>% 
+  mutate(item_wanted_1 = str_trim(item_wanted_1, side = "left")) %>% 
+  mutate(item_given = str_trim(item_given, side = "left")) 
+cleaner_data1$item_wanted_1 <- str_remove(cleaner_data1$item_wanted_1, "\r")
+cleaner_data1
 ```
 
 
+```{r}
+cleaner_data1.1 <- cleaner_data1 %>% 
+  mutate(em_wanted = if_else(item_wanted_1 == "Emerald", TRUE, FALSE)) 
+```
 
+```{r}
+cleaner_data1.1 <- cleaner_data1.1 %>% 
+  mutate(num_em_want_low = ifelse(em_wanted == TRUE, num_item_wanted, NA)) %>% 
+  mutate(num_em_want_high = ifelse(em_wanted == TRUE, num_item_wanted, NA))  
+cleaner_data1.1
+```
 
+```{r}
+cleaner_data1.1 <- cleaner_data1.1 %>% 
+  mutate(num_item_wanted = as.integer(num_item_wanted)) %>% 
+  mutate(num_item_want = case_when(item_wanted_1 != "Emerald" ~ num_item_wanted,
+                                   item_wanted_2 == "Compass" ~ 1))
+```
 
+```{r}
+cleaner_data1.1 <- cleaner_data1.1 %>% 
+  mutate(item_wanted = case_when(item_wanted_1 != "Emerald" ~ item_wanted_1,
+                              item_wanted_2 == "Compass" ~ item_wanted_2,
+                              TRUE ~ NA))  
+```
 
+```{r}
+cleaner_data1.1 <- cleaner_data1.1 %>% 
+  mutate(em_given = if_else(item_given == "Emerald", TRUE, FALSE))
+```
+
+```{r}
+cleaner_data1.1 <- cleaner_data1.1 %>% 
+  mutate(num_em_given = ifelse(em_given == TRUE, 1, NA))  
+```
+
+```{r}
+cleaner_data1.1 <- cleaner_data1.1 %>% 
+  mutate(item_given = ifelse(item_given == "Emerald", NA, item_given))  
+```
+
+```{r}
+cleaner_data1.1 <- cleaner_data1.1 %>% 
+  mutate(num_item_given = ifelse(is.na(item_wanted) != FALSE, 1, NA))  
+```
+
+```{r}
+cleaner_data1.1 <- cleaner_data1.1 %>%
+  mutate(trade = "Cartographer")
+```
+
+```{r}
+cleaner_data1.1 <- cleaner_data1.1 %>% 
+  select(row_id, trade, level, bedrock_edition_slot, bedrock_edition_probability, java_edition_probability, em_wanted, num_em_want_low, num_em_want_high, item_wanted, num_item_want, em_given, num_em_given, item_given, num_item_given, trades_in_stock, price_multiplier, villager_xp)
+```
+
+```{r}
+write.csv(cleaner_data1.1, "cartographer_clean_2.csv", row.names = FALSE)
+cartographer <- read_csv("cartographer_clean_2.csv")
+```
 

@@ -1,0 +1,27 @@
+"row_id","trade","level","bedrock_edition_slot","bedrock_edition_probability","java_edition_probability","em_wanted","num_em_want_low","num_em_want_high","item_wanted","num_item_want","em_given","num_em_given","item_given","num_item_given","trades_in_stock","price_multiplier","villager_xp"
+1,"Shepherd","Novice",1,25,40,FALSE,NA,NA,"White Wool","18 ",TRUE,"1",NA,NA,16,"Low",2
+2,"Shepherd","Novice",1,25,40,FALSE,NA,NA,"Brown Wool","18 ",TRUE,"1",NA,NA,16,"Low",2
+3,"Shepherd","Novice",1,25,40,FALSE,NA,NA,"Black Wool","18 ",TRUE,"1",NA,NA,16,"Low",2
+4,"Shepherd","Novice",1,25,40,FALSE,NA,NA,"Gray Wool","18 ",TRUE,"1",NA,NA,16,"Low",2
+5,"Shepherd","Novice",2,100,40,TRUE,"2 ","2 ",NA,NA,FALSE,NA,"Shears","1",12,"Low",1
+6,"Shepherd","Apprentice",3,20,5,FALSE,NA,NA,"White Dye","12 ",TRUE,"1",NA,NA,16,"Low",10
+7,"Shepherd","Apprentice",3,20,5,FALSE,NA,NA,"Gray Dye","12 ",TRUE,"1",NA,NA,16,"Low",10
+8,"Shepherd","Apprentice",3,20,5,FALSE,NA,NA,"Black Dye","12 ",TRUE,"1",NA,NA,16,"Low",10
+9,"Shepherd","Apprentice",3,20,5,FALSE,NA,NA,"Light Blue Dye","12 ",TRUE,"1",NA,NA,16,"Low",10
+10,"Shepherd","Apprentice",3,20,5,FALSE,NA,NA,"Lime Dye","12 ",TRUE,"1",NA,NA,16,"Low",10
+11,"Shepherd","Apprentice",4,50,68,TRUE,"1","1",NA,NA,FALSE,NA,"Wool","1",16,"Low",5
+12,"Shepherd","Apprentice",4,50,68,TRUE,"1","1",NA,NA,FALSE,NA,"Carpet","4 ",16,"Low",5
+13,"Shepherd","Journeyman",5,20,10,FALSE,NA,NA,"Yellow Dye","12 ",TRUE,"1",NA,NA,16,"Low",20
+14,"Shepherd","Journeyman",5,20,10,FALSE,NA,NA,"Light Gray Dye","12 ",TRUE,"1",NA,NA,16,"Low",20
+15,"Shepherd","Journeyman",5,20,10,FALSE,NA,NA,"Orange Dye","12 ",TRUE,"1",NA,NA,16,"Low",20
+16,"Shepherd","Journeyman",5,20,10,FALSE,NA,NA,"Red Dye","12 ",TRUE,"1",NA,NA,16,"Low",20
+17,"Shepherd","Journeyman",5,20,10,FALSE,NA,NA,"Pink Dye","12 ",TRUE,"1",NA,NA,16,"Low",20
+18,"Shepherd","Journeyman",6,100,95,TRUE,"3 ","3 ",NA,NA,FALSE,NA,"Bed","1",12,"Low",10
+19,"Shepherd","Expert",7,17,9,FALSE,NA,NA,"Brown Dye","12 ",TRUE,"1",NA,NA,16,"Low",30
+20,"Shepherd","Expert",7,17,9,FALSE,NA,NA,"Purple Dye","12 ",TRUE,"1",NA,NA,16,"Low",30
+21,"Shepherd","Expert",7,17,9,FALSE,NA,NA,"Blue Dye","12 ",TRUE,"1",NA,NA,16,"Low",30
+22,"Shepherd","Expert",7,17,9,FALSE,NA,NA,"Green Dye","12 ",TRUE,"1",NA,NA,16,"Low",30
+23,"Shepherd","Expert",7,17,9,FALSE,NA,NA,"Magenta Dye","12 ",TRUE,"1",NA,NA,16,"Low",30
+24,"Shepherd","Expert",7,17,9,FALSE,NA,NA,"Cyan Dye","12 ",TRUE,"1",NA,NA,16,"Low",30
+25,"Shepherd","Expert",8,100,94,TRUE,"3 ","3 ",NA,NA,FALSE,NA,"Banner","1",12,"Low",15
+26,"Shepherd","Master",9,100,100,TRUE,"2 ","2 ",NA,NA,FALSE,NA,"Painting","3 ",12,"Low",30

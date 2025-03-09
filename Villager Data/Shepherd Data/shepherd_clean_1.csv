@@ -1,0 +1,27 @@
+"level","bedrock_edition_slot","bedrock_edition_probability","java_edition_probability","num_item_wanted","item_wanted","num_item_given","item_given","trades_in_stock","price_multiplier","villager_xp"
+"Novice",1,25,40,"18 "," White Wool","1","Emerald",16,"Low",2
+"Novice",1,25,40,"18 "," Brown Wool","1","Emerald",16,"Low",2
+"Novice",1,25,40,"18 "," Black Wool","1","Emerald",16,"Low",2
+"Novice",1,25,40,"18 "," Gray Wool","1","Emerald",16,"Low",2
+"Novice",2,100,40,"2 "," Emerald","1","Shears",12,"Low",1
+"Apprentice",3,20,5,"12 "," White Dye","1","Emerald",16,"Low",10
+"Apprentice",3,20,5,"12 "," Gray Dye","1","Emerald",16,"Low",10
+"Apprentice",3,20,5,"12 "," Black Dye","1","Emerald",16,"Low",10
+"Apprentice",3,20,5,"12 "," Light Blue Dye","1","Emerald",16,"Low",10
+"Apprentice",3,20,5,"12 "," Lime Dye","1","Emerald",16,"Low",10
+"Apprentice",4,50,68,"1","Emerald","1","Any color Wool",16,"Low",5
+"Apprentice",4,50,68,"1","Emerald","4 "," Any color Carpet",16,"Low",5
+"Journeyman",5,20,10,"12 "," Yellow Dye","1","Emerald",16,"Low",20
+"Journeyman",5,20,10,"12 "," Light Gray Dye","1","Emerald",16,"Low",20
+"Journeyman",5,20,10,"12 "," Orange Dye","1","Emerald",16,"Low",20
+"Journeyman",5,20,10,"12 "," Red Dye","1","Emerald",16,"Low",20
+"Journeyman",5,20,10,"12 "," Pink Dye","1","Emerald",16,"Low",20
+"Journeyman",6,100,95,"3 "," Emerald","1","Any color Bed",12,"Low",10
+"Expert",7,17,9,"12 "," Brown Dye","1","Emerald",16,"Low",30
+"Expert",7,17,9,"12 "," Purple Dye","1","Emerald",16,"Low",30
+"Expert",7,17,9,"12 "," Blue Dye","1","Emerald",16,"Low",30
+"Expert",7,17,9,"12 "," Green Dye","1","Emerald",16,"Low",30
+"Expert",7,17,9,"12 "," Magenta Dye","1","Emerald",16,"Low",30
+"Expert",7,17,9,"12 "," Cyan Dye","1","Emerald",16,"Low",30
+"Expert",8,100,94,"3 "," Emerald","1","Any color Banner",12,"Low",15
+"Master",9,100,100,"2 "," Emerald","3 "," Painting",12,"Low",30

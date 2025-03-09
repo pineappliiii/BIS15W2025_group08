@@ -1,0 +1,20 @@
+"row_id","trade","level","bedrock_edition_slot","bedrock_edition_probability","java_edition_probability","em_wanted","num_em_want_low","num_em_want_high","item_wanted","num_item_want","em_given","num_em_given","item_given","num_item_given","trades_in_stock","price_multiplier","villager_xp"
+1,"Farmer","Novice",1,25,40,FALSE,NA,NA,"Wheat","20 ",TRUE,"1",NA,NA,16,"Low",2
+2,"Farmer","Novice",1,25,40,FALSE,NA,NA,"Potato","26 ",TRUE,"1",NA,NA,16,"Low",2
+3,"Farmer","Novice",1,25,40,FALSE,NA,NA,"Carrot","22 ",TRUE,"1",NA,NA,16,"Low",2
+4,"Farmer","Novice",1,25,40,FALSE,NA,NA,"Beetroot","15 ",TRUE,"1",NA,NA,16,"Low",2
+5,"Farmer","Novice",2,100,40,TRUE,"1","1",NA,NA,FALSE,NA,"Bread","6 ",16,"Low",1
+6,"Farmer","Apprentice",3,100,67,FALSE,NA,NA,"Pumpkin","6 ",TRUE,"1",NA,NA,12,"Low",10
+7,"Farmer","Apprentice",4,50,67,TRUE,"1","1",NA,NA,FALSE,NA,"Pumpkin Pie","4 ",12,"Low",5
+8,"Farmer","Apprentice",4,50,67,TRUE,"1","1",NA,NA,FALSE,NA,"Apple","4 ",16,"Low",5
+9,"Farmer","Journeyman",5,100,100,FALSE,NA,NA,"Melon","4 ",TRUE,"1",NA,NA,12,"Low",20
+10,"Farmer","Journeyman",6,100,100,TRUE,"3 ","3 ",NA,NA,FALSE,NA,"Cookie","18 ",12,"Low",10
+11,"Farmer","Expert",7,17,29,TRUE,"1","1",NA,NA,FALSE,NA,"Suspicious Stew Blindness","1",12,"Low",15
+12,"Farmer","Expert",7,17,29,TRUE,"1","1",NA,NA,FALSE,NA,"Suspicious Stew Jump Boost","1",12,"Low",15
+13,"Farmer","Expert",7,17,29,TRUE,"1","1",NA,NA,FALSE,NA,"Suspicious Stew Night Vision","1",12,"Low",15
+14,"Farmer","Expert",7,17,29,TRUE,"1","1",NA,NA,FALSE,NA,"Suspicious Stew Poison","1",12,"Low",15
+15,"Farmer","Expert",7,17,29,TRUE,"1","1",NA,NA,FALSE,NA,"Suspicious Stew Saturation","1",12,"Low",15
+16,"Farmer","Expert",7,17,29,TRUE,"1","1",NA,NA,FALSE,NA,"Suspicious Stew Weakness","1",12,"Low",15
+17,"Farmer","Expert",8,100,29,TRUE,"1","1",NA,NA,FALSE,NA,"Cake","1",12,"Low",15
+18,"Farmer","Master",9,50,100,TRUE,"3 ","3 ",NA,NA,FALSE,NA,"Golden Carrot","3 ",12,"Low",30
+19,"Farmer","Master",9,50,100,TRUE,"4 ","4 ",NA,NA,FALSE,NA,"Glistering Melon Slice","3 ",12,"Low",30
