@@ -1,0 +1,42 @@
+---
+title: "I_Still_Think_The_Data_Is_Rndm"
+output: html_document
+---
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(shiny)
+library(shinydashboard)
+require(janitor)
+library(palmerpenguins)
+```
+
+#"Player_ID", "Session_ID", "Playtime_minutes", "Blocks_Placed", "Blocks_Destroyed", "Items_Crafted", "Mobs_Killed", "Deaths", "Coordinates_X", "Coordinates_Y", "Coordinates_Z", "Biome", "Health_Remaining", "Hunger_Level", "Experiance_Level", "Tools_Used", "Armor_Equipped", "Weather", "Game_Mode", "Day_Cycle", "Chat_Messages", "Server_Latency", "FPS", "Device_Type"
+
+```{r, eval=F, echo=T}
+
+minecraft <- read_csv("minecraft_game_usage.csv")
+
+ui <- fluidPage(titlePanel("I_Still_Think_The_Data_Is_Rndm"),
+                selectInput("x", 
+                             "Select Variable", 
+                             choices= c("Player_ID", "Session_ID", "Playtime_minutes", "Blocks_Placed", "Blocks_Destroyed", "Items_Crafted", "Mobs_Killed", "Deaths", "Coordinates_X", "Coordinates_Y", "Coordinates_Z", "Biome", "Health_Remaining", "Hunger_Level", "Experiance_Level", "Tools_Used", "Armor_Equipped", "Weather", "Game_Mode", "Day_Cycle", "Chat_Messages", "Server_Latency", "FPS", "Device_Type"),
+              selected="Deaths"),
+                plotOutput("plot", width="500px", height="400px")
+)
+
+server <- function(input, output, session) {
+  
+  output$plot <- renderPlot({
+    
+    ggplot(data=minecraft, 
+           aes_string(x=input$x, color= "Game_Mode")) +
+      geom_bar(alpha=0.8, color="black") +
+      theme_light(base_size=14) +
+      labs(x=NULL, y=NULL, fill="Fill Variable")
+  })
+  
+}
+
+shinyApp(ui, server)
+```
