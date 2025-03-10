@@ -17,14 +17,15 @@ library(plotly)
 
 
 ```{r}
-minecraft <- read_csv("desktop/BIS15W2025_group08/clean_survival_PC_MCdata.csv")
+minecraft <- read_csv("Tracy/clean_survival_PC_MCdata.csv")
 ```
 Different kinds of player tool used
 ```{r}
 minecraft %>% 
   group_by(player_type) %>% 
   ggplot(aes(x=tools_used, fill = player_type))+
-  geom_bar(position = "dodge")
+  geom_bar(position = "dodge")+
+  labs(title = "Different kinds of player tool used", x = "Tools", y= "number of players")
 ```
 
 ```{r}
@@ -42,7 +43,8 @@ minecraft %>%
   group_by(biome) %>% 
   ggplot(aes(x=biome, y=mobs_killed, fill=player_type))+
   geom_boxplot()+
-  facet_grid(player_type~.)
+  facet_grid(player_type~.)+
+  labs(title = "Relationship between monster killed and different biomes", x = "Biomes", y= "monsters killed")
 ```
 
 Health Remaining Distribution
@@ -75,7 +77,7 @@ minecraft %>%
       theme_minimal() +
       labs(title = "Blocks Placed vs Blocks Destroyed", x = "Blocks Placed", y = "Blocks Destroyed")
 ```
-different tyoes of armor used
+different types of armor used
 ```{r}
 minecraft %>% 
   select(player_type, armor_equipped) %>% 
@@ -89,5 +91,28 @@ minecraft %>%
 minecraft %>% 
   group_by(player_type) %>% 
   ggplot(aes(x=armor_equipped, fill = player_type))+
-  geom_bar(position = "dodge")
+  geom_bar(position = "dodge")+
+  labs(title = "Different types of armor used", x = "Types of Armor", y = "number of people")
 ```
+
+playtime vs monsters killed
+```{r}
+minecraft %>% 
+  ggplot(aes(x=playtime_minutes, y=mobs_killed))+
+  geom_jitter() +
+      geom_smooth(method = lm, se=T)+
+      theme_minimal() +
+      labs(title = "Relationship between playtime and monsters killed", x = "playtime (min)", y = "monsters killed")
+```
+
+tools used vs mobs killed
+```{r}
+minecraft %>% 
+  select(tools_used,mobs_killed) %>%
+  group_by(tools_used) %>% 
+  summarize(all_mobs_killed=sum(mobs_killed)) %>% 
+  ggplot(aes(x=tools_used,y=all_mobs_killed, fill = tools_used))+
+  geom_col()+
+  labs(title = "Relationship between tools used and monsters killed", x = "tools", y = "monsters killed")
+```
+
