@@ -17,7 +17,7 @@ library(plotly)
 
 
 ```{r}
-minecraft <- read_csv("../Tracy/clean_survival_PC_MCdata.csv")
+minecraft <- read_csv("clean_survival_PC_MCdata.csv")
 ```
 Different kinds of player tool used
 ```{r}
@@ -46,7 +46,7 @@ p <- minecraft %>%
   ggplot(aes(x=biome, y=mobs_killed, fill=player_type))+
   geom_boxplot()+
   facet_grid(player_type~.)+
-  labs(title = "Relationship between monster killed and different biomes", x = "Biomes", y= "monsters killed")
+  labs(title = "Relationship between mobs killed and different biomes", x = "Biomes", y= "mobs killed")
 p
 ggsave("mobs_killed_player_type_biomes.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
@@ -107,14 +107,14 @@ p
 ggsave("armor_equipt_count.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
 
-playtime vs monsters killed
+playtime vs mobs killed
 ```{r}
 p <- minecraft %>% 
   ggplot(aes(x=playtime_minutes, y=mobs_killed))+
   geom_jitter() +
       geom_smooth(method = lm, se=T)+
       theme_minimal() +
-      labs(title = "Relationship between playtime and monsters killed", x = "playtime (min)", y = "monsters killed")
+      labs(title = "Relationship between playtime and mobs killed", x = "playtime (min)", y = "mobs killed")
 p
 ggsave("playtime_mobs_killed.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
