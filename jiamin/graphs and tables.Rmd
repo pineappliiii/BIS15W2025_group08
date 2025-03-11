@@ -17,15 +17,17 @@ library(plotly)
 
 
 ```{r}
-minecraft <- read_csv("Tracy/clean_survival_PC_MCdata.csv")
+minecraft <- read_csv("../Tracy/clean_survival_PC_MCdata.csv")
 ```
 Different kinds of player tool used
 ```{r}
-minecraft %>% 
+p <- minecraft %>% 
   group_by(player_type) %>% 
   ggplot(aes(x=tools_used, fill = player_type))+
   geom_bar(position = "dodge")+
   labs(title = "Different kinds of player tool used", x = "Tools", y= "number of players")
+p
+ggsave("tools_used_player_type.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
 
 ```{r}
@@ -39,17 +41,19 @@ minecraft %>%
 
 Mobs Killed vs Biome
 ```{r}
-minecraft %>% 
+p <- minecraft %>% 
   group_by(biome) %>% 
   ggplot(aes(x=biome, y=mobs_killed, fill=player_type))+
   geom_boxplot()+
   facet_grid(player_type~.)+
   labs(title = "Relationship between monster killed and different biomes", x = "Biomes", y= "monsters killed")
+p
+ggsave("mobs_killed_player_type_biomes.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
 
 Health Remaining Distribution
 ```{r}
-minecraft %>% 
+p <- minecraft %>% 
   group_by(player_type) %>% 
   ggplot(aes(health_remaining))+
   geom_histogram(aes(y = after_stat(density)), fill="thistle", alpha = 0.4, color = "grey", bins = 20)+
@@ -57,25 +61,31 @@ minecraft %>%
       theme_minimal() +
       labs(title = "Health Remaining Distribution", x = "Health Remaining")+
   facet_grid(.~player_type)
+p
+ggsave("health_remaining_dist.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
 Hunger vs Health
 ```{r}
-minecraft %>% 
+p <- minecraft %>% 
       ggplot(aes(x = hunger_level, y = health_remaining)) +
       geom_jitter() +
       geom_smooth(method = lm, se=T)+
       theme_minimal() +
       labs(title = "Hunger Level vs Health Remaining", x = "Hunger Level", y = "Health Remaining")
+p
+ggsave("hunger_vs_health.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
 
 Blocks Placed vs Destroyed
 ```{r}
-minecraft %>% 
+p <- minecraft %>% 
  ggplot(aes(x = blocks_placed, y = blocks_destroyed)) +
       geom_jitter() +
       geom_smooth(method = lm, se=T)+
       theme_minimal() +
       labs(title = "Blocks Placed vs Blocks Destroyed", x = "Blocks Placed", y = "Blocks Destroyed")
+p
+ggsave("placed_vs_destroyed.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
 different types of armor used
 ```{r}
@@ -88,31 +98,37 @@ minecraft %>%
 ```
 
 ```{r}
-minecraft %>% 
+p <- minecraft %>% 
   group_by(player_type) %>% 
   ggplot(aes(x=armor_equipped, fill = player_type))+
   geom_bar(position = "dodge")+
   labs(title = "Different types of armor used", x = "Types of Armor", y = "number of people")
+p
+ggsave("armor_equipt_count.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
 
 playtime vs monsters killed
 ```{r}
-minecraft %>% 
+p <- minecraft %>% 
   ggplot(aes(x=playtime_minutes, y=mobs_killed))+
   geom_jitter() +
       geom_smooth(method = lm, se=T)+
       theme_minimal() +
       labs(title = "Relationship between playtime and monsters killed", x = "playtime (min)", y = "monsters killed")
+p
+ggsave("playtime_mobs_killed.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
 
 tools used vs mobs killed
 ```{r}
-minecraft %>% 
+p <- minecraft %>% 
   select(tools_used,mobs_killed) %>%
   group_by(tools_used) %>% 
   summarize(all_mobs_killed=sum(mobs_killed)) %>% 
   ggplot(aes(x=tools_used,y=all_mobs_killed, fill = tools_used))+
   geom_col()+
   labs(title = "Relationship between tools used and monsters killed", x = "tools", y = "monsters killed")
+p
+ggsave("tool_by_mobs_killed.png", plot = p, width = 8, height = 6, dpi = 300)
 ```
 
