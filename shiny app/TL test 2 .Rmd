@@ -168,3 +168,8 @@ server <- function(input, output, session) {
 shinyApp(ui = ui, server = server)
 ```
 
+```{r}
+read_csv("data/minecraft_game_usage.csv")
+```
+
+
