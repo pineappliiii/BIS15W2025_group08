@@ -14,6 +14,7 @@ library(DT)
 library(readr)
 library(shiny)
 library(plotly)
+library(shinydashboard)
 ```
 
 
@@ -25,13 +26,20 @@ df$player_type <- trimws(as.character(df$player_type))
 
 # Define UI
 ui <- fluidPage(
-  titlePanel("Minecraft Player Analysis"),
+  fluidPage(
+  # Insert a static image at the top
+  fluidPage(imageOutput("picture", height = "700px", width = "100%"),
+  tags$head(tags$style(HTML("body {background-color: #f4f4f4;}
+                            .title {text-align: center; font-size: 30px; font-weight: bold; color: #4CAF50;}
+                            .panel {background-color: white; padding: 15px; border-radius: 10px; box-shadow: 2px 2px 10px gray;}
+                            .shiny-input-container {margin-bottom: 15px;}"))),
   sidebarLayout(
     sidebarPanel(
       selectInput("player_type", "Select Player Type:", choices = NULL),
       selectInput("data_type", "Select Data Type:", choices = c("Table", "Graph", "3D Map")),
       selectInput("data_view", "Select View:", choices = c("Tool Used", "Mobs Killed vs Biome", "Health Remaining Distribution", "Hunger vs Health", "Blocks Placed vs Destroyed", "Armor Equipped", "Player 3D Position"))
     ),
+
     mainPanel(
       conditionalPanel(
         condition = "input.data_type == 'Table' && input.data_view == 'Tool Used'", tableOutput("table_tool")),
@@ -53,7 +61,7 @@ ui <- fluidPage(
         condition = "input.data_type == '3D Map' && input.data_view == 'Player 3D Position'", plotlyOutput("plot_3d_position"))
     )
   )
-)
+)))
 
 # Define Server
 server <- function(input, output, session) {
@@ -76,6 +84,8 @@ server <- function(input, output, session) {
     req(nrow(filtered_data()) > 0)
     tool_table <- as.data.frame(table(filtered_data()$tools_used))
     colnames(tool_table) <- c("Tools Used", "Number")
+    tool_table <- tool_table[order(-tool_table$Number),]
+    if (nrow(tool_table) == 0) return(data.frame("Tools Used" = "No Data", "Number" = 0))
     tool_table
   })
   
@@ -148,6 +158,10 @@ server <- function(input, output, session) {
                           zaxis = list(title = "Z Coordinate")))
   })
   
+ output$picture <- renderImage({
+    list(src= "picture.jpg", height = "80%", width= "100%")
+  }, deleteFile = FALSE) 
+ 
 }
 
 # Run the application 
