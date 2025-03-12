@@ -20,9 +20,21 @@ library(shinydashboard)
 
 ```{r}
 
+```
+
+
+
+```{r}
+
 # Load dataset
 df <- read.csv("clean_survival_PC_MCdata.csv")
 df$player_type <- trimws(as.character(df$player_type))
+
+# color for 3D map
+
+tool_colors <- RColorBrewer::brewer.pal(length(unique(df$tools_used)), "Set1")  # Generate distinct colors
+tool_color_map <- setNames(tool_colors, unique(df$tools_used))  # Map colors to tool names
+
 
 # Define UI
 ui <- fluidPage(
@@ -65,11 +77,15 @@ ui <- fluidPage(
 
 # Define Server
 server <- function(input, output, session) {
+   
   updateSelectInput(session, "player_type", choices = unique(df$player_type)) 
+  updateSelectInput(session, "tool_filter", choices = unique(df$tools_used), selected = unique(df$tools_used))  # Populate Tool Selection
   
   filtered_data <- reactive({
     req(input$player_type)
-    df[df$player_type == input$player_type & !is.na(df$armor_equipped), ]
+    df_filtered <- df[df$player_type == input$player_type & !is.na(df$armor_equipped), ]
+    df_filtered$color <- tool_color_map[df_filtered$tools_used]  # Assign colors based on tools
+    df_filtered
   })
   
   output$barplot_tool <- renderPlot({
@@ -149,13 +165,22 @@ server <- function(input, output, session) {
   output$plot_3d_position <- renderPlotly({
     req(nrow(filtered_data()) > 0)
     plot_ly(
-      filtered_data(), x = ~coordinates_x, y = ~coordinates_y, z = ~coordinates_z,
-      type = "scatter3d", mode = "markers", marker = list(size = 3, color = 'skyblue')
+      filtered_data(), 
+      x = ~coordinates_x, 
+      y = ~coordinates_y, 
+      z = ~coordinates_z,
+      type = "scatter3d", 
+      mode = "markers",
+      color = ~tools_used,  # Assign color to tools
+      colors = tool_color_map,  # Use predefined color mapping
+      marker = list(size = 5)
     ) %>%
       layout(title = "Player 3D Position",
+             legend = list(title = list(text = "Tools Used")),  # Display legend
              scene = list(xaxis = list(title = "X Coordinate"),
                           yaxis = list(title = "Y Coordinate"),
                           zaxis = list(title = "Z Coordinate")))
+  
   })
   
  output$picture <- renderImage({
